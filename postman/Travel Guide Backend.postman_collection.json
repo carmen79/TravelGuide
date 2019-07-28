@@ -1,0 +1,239 @@
+{
+	"info": {
+		"_postman_id": "500f50a1-a85f-43b1-a42a-b6c82051da0a",
+		"name": "Travel Guide Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ce69d7a2-943f-46e4-a34c-90a4dc67ea9c",
+								"exec": [
+									"tests[\"Status Code 200 after correct login\"] = responseCode.code === 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"carmen@carmen.com\",\n\t\"password\": \"Carmen\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Non Existent User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "292846b9-5c4c-4677-ae81-c60cf1b289c4",
+								"exec": [
+									"tests[\"Status Code 401 after non existent user\"] = responseCode.code === 401;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"notexists@notexists.com\",\n\t\"password\": \"BAD PASSWORD\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Incorrect Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bcf920fd-5f59-48c6-874a-045f0c86640a",
+								"exec": [
+									"tests[\"Status Code 401 after incorrect password\"] = responseCode.code === 401;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"carmen@carmen.com\",\n\t\"password\": \"BAD PASSWORD\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Invalid Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "65eb7a78-2244-4048-90c3-3d2d0ecf22e0",
+								"exec": [
+									"tests[\"Status Code 400 for password lenght < 5\"] = responseCode.code === 400;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"carmen@carmen.com\",\n\t\"password\": \"123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "New user",
+			"item": [
+				{
+					"name": "Create existing user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "71f6b9bc-9993-4e85-b737-6b2ae3af4250",
+								"exec": [
+									"tests[\"Status Code 400 when creating existing user\"] = responseCode.code === 400;",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"carmen@carmen.com\",\n\t\"password\": \"Carmen\",\n\t\"username\": \"Carmen\"\n\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
