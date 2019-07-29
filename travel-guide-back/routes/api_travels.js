@@ -9,7 +9,7 @@ const mongo = require('mongodb');
 require("../database/mongo_db");
 
 /*
-    GET endpoint: Return a list of travels stored in database
+    ENDPOINT:
 */
 router.get('/', (req, res) => {
     const token = req.headers.authorization.replace("Bearer ", "");
@@ -19,11 +19,10 @@ router.get('/', (req, res) => {
         const payload = jwt.verify(token, "mysecret");
 
         query = global.dbo.collection("travels").find({ userId: payload._id }, {});
-        // este userId será el id del usuario que lo tengo que guardar en la 
-        //bbdd de Travel
+      
         query.toArray().then(documents => {
             res.send(documents);
-            // este document se refiere a un registro de la bbdd que en mongo son document
+         
         });
     } catch (e) {
         res.status(401).send("You don't have permission");
@@ -31,6 +30,12 @@ router.get('/', (req, res) => {
 
 });
 
+/*
+ENDPOINT:  find a travel to edit 
+PARAMETRES:
+-travelId
+-token
+*/
 router.get('/:id', (req, res) => {
     const travelsId = req.params.id;
     const token = req.headers.authorization.replace("Bearer ", "");
@@ -50,30 +55,17 @@ router.get('/:id', (req, res) => {
     }
 
 });
+/*
+ENDPOINT:  edit travell
+PARAMETRES:
+-token
+-travelId
+-destino
+-fecha inicio
+-fecha fin
+-descripción
+*/
 
-
-router.post('/', function (req, res) {
-    const newtravel = req.body;
-    const token = req.headers.authorization.replace("Bearer ", "");
-
-
-    try {
-        const payload = jwt.verify(token, "mysecret");
-        global.dbo.collection("travels").insertOne({
-            destino: newtravel.destino,
-            fechaInicio: newtravel.fechaInicio,
-            fechaFin: newtravel.fechaFin,
-            descripcion: newtravel.descripcion,
-            userId: payload._id
-        }, (error, result) => {
-            if (error) throw error;
-            res.send(result.ops[0]);
-        });
-    } catch (_err) {
-        console.log(_err);
-        res.status(401).send("an error has occurd");
-    }
-});
 
 router.put("/:id", (req, res) => {
     const token = req.headers.authorization.replace("Bearer ", "");
@@ -100,6 +92,36 @@ router.put("/:id", (req, res) => {
     }
 });
 
+/*
+ENDPOINT:add new travel
+*/
+
+router.post('/', function (req, res) {
+    const newtravel = req.body;
+    const token = req.headers.authorization.replace("Bearer ", "");
+
+
+    try {
+        const payload = jwt.verify(token, "mysecret");
+        global.dbo.collection("travels").insertOne({
+            destino: newtravel.destino,
+            fechaInicio: newtravel.fechaInicio,
+            fechaFin: newtravel.fechaFin,
+            descripcion: newtravel.descripcion,
+            userId: payload._id
+        }, (error, result) => {
+            if (error) throw error;
+            res.send(result.ops[0]);
+        });
+    } catch (_err) {
+        console.log(_err);
+        res.status(401).send("an error has occurd");
+    }
+});
+
+/*
+ENDPOINT: delete travel
+*/
 router.delete("/:id", (req, res) => {
     const token = req.headers.authorization.replace("Bearer ", "");
     const travelId = req.params.id;

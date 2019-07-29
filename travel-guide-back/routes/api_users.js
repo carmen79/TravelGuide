@@ -55,6 +55,14 @@ router.post('/login', function (req, res) {
 });
 /*
 ENDPOINT: Add New User
+PARAMETERS:
+ - Username
+ - email
+ - password
+ RETURN:
+ - OK: 200
+ - USER ALREDY EXISTS:400
+ - INCORRECT PASSWORD FORMAT: 400?(FALTA POR INCLUIR)
 
 */
 
@@ -102,7 +110,6 @@ router.post('/', function (req, res) {
     }
 });
 
-// TODO *********************************
 /*
 ENDPOINT: Edit User
 HEADERS: Token
@@ -114,6 +121,54 @@ RETURN:
  - OK: 200
  - ...
 */
+router.get('/users/:id', (req, res) => {
+    const userId = req.params.id;
+    const token = req.headers.authorization.replace("Bearer ", "");
+    console.log(token);
+
+    try {
+        const payload = jwt.verify(token, "mysecret");
+
+        query = global.dbo.collection("users").find({ _id: mongo.ObjectId(userId) });
+
+        query.toArray().then(documents => {
+            res.send(documents[0]);
+        });
+
+    } catch (err) {
+        res.status(401).send("you don`t have permission");
+    }
+
+});
+
+router.put("/users/:id", (req, res) => {
+    const token = req.headers.authorization.replace("Bearer ", "");
+    const userId = req.params.id;
+    const data = req.body;
+
+    try {
+        global.dbo.collection("users").updateOne({ _id: mongo.ObjectId(userId) }, {
+            $set:
+            {
+                    username: data.username,
+                    password: md5(data.password),
+                    admin: false,
+                    email: data.email
+            }
+        }, (error, result) => {
+            if (error) throw error;
+            res.send(result)
+        });
+
+    } catch (_err) {
+        console.log(_err);
+        res.status(401).send(" you don't have permission to edit");
+    }
+});
+
+
+
+
 
 /*
 ENDPOINT: Remove User
@@ -124,6 +179,26 @@ RETURN:
  - OK: 200
  - ...
 */
+
+router.delete("/users/:id", (req, res) => {
+    const token = req.headers.authorization.replace("Bearer ", "");
+    const userId = req.params.id;
+
+    try {
+        const payload = jwt.verify(token, "mysecret");
+
+        global.dbo.collection("users").removeOne({ _id: mongo.ObjectId(userId) },
+            (error, result) => {
+                if (error) throw error;
+                res.send("deleted")
+            });
+    } catch (_err) {
+        console.log(_err);
+        res.status(401).send(" you don't have permission to delete");
+    }
+
+
+})
 
 /*
 ENDPOINT: Change User password
