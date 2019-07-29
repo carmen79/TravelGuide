@@ -53,6 +53,10 @@ router.post('/login', function (req, res) {
         });
     }
 });
+/*
+ENDPOINT: Add New User
+
+*/
 
 router.post('/', function (req, res) {
     const newUser = req.body;
@@ -97,4 +101,40 @@ router.post('/', function (req, res) {
         res.status(401).send("an error has occurred");
     }
 });
+
+// TODO *********************************
+/*
+ENDPOINT: Edit User
+HEADERS: Token
+PARAMETERS:
+ - user Id
+ - email
+ - username
+RETURN:
+ - OK: 200
+ - ...
+*/
+
+/*
+ENDPOINT: Remove User
+HEADERS: Token
+PARAMETERS:
+ - user Id
+RETURN:
+ - OK: 200
+ - ...
+*/
+
+/*
+ENDPOINT: Change User password
+HEADERS: Token
+PARAMETERS:
+ - user Id
+ - old Password
+ - new Password
+RETURN:
+ - OK: 200
+ - ...
+*/
+
 module.exports = router;
