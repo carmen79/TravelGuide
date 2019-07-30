@@ -53,6 +53,7 @@ router.post('/login', function (req, res) {
         });
     }
 });
+
 /*
 ENDPOINT: Add New User
 PARAMETERS:
@@ -65,7 +66,6 @@ PARAMETERS:
  - INCORRECT PASSWORD FORMAT: 400?(FALTA POR INCLUIR)
 
 */
-
 router.post('/', function (req, res) {
     const newUser = req.body;
 
@@ -83,8 +83,8 @@ router.post('/', function (req, res) {
                     username: newUser.username,
                     password: md5(newUser.password),
                     admin: false,
-                    email: newUser.email
-
+                    email: newUser.email,
+                    photo: newUser.photo
                 }, (error, result) => {
                     if (error) throw error;
                     var token = jwt.sign(
@@ -93,7 +93,6 @@ router.post('/', function (req, res) {
                             username: newUser.username,
                             email: newUser.email,
                             admin: newUser.admin ? true : false
-
                         },
                         "mysecret",
                         {
@@ -111,17 +110,15 @@ router.post('/', function (req, res) {
 });
 
 /*
-ENDPOINT: Edit User
+ENDPOINT: Get User
 HEADERS: Token
 PARAMETERS:
  - user Id
- - email
- - username
 RETURN:
  - OK: 200
- - ...
+ - FAIL: 401
 */
-router.get('/users/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     const userId = req.params.id;
     const token = req.headers.authorization.replace("Bearer ", "");
     console.log(token);
@@ -141,34 +138,41 @@ router.get('/users/:id', (req, res) => {
 
 });
 
-router.put("/users/:id", (req, res) => {
+/*
+ENDPOINT: Edit User
+HEADERS: Token
+PARAMETERS:
+ - user Id
+ - email
+ - username
+RETURN:
+ - OK: 200
+ - FAIL: 401
+*/
+router.put("/:id", (req, res) => {
     const token = req.headers.authorization.replace("Bearer ", "");
     const userId = req.params.id;
     const data = req.body;
 
     try {
+        const payload = jwt.verify(token, "mysecret");
         global.dbo.collection("users").updateOne({ _id: mongo.ObjectId(userId) }, {
             $set:
             {
-                    username: data.username,
-                    password: md5(data.password),
-                    admin: false,
-                    email: data.email
+                username: data.username,
+                email: data.email,
+                photo: data.photo
             }
         }, (error, result) => {
             if (error) throw error;
-            res.send(result)
+            res.status(200).send(result)
         });
 
     } catch (_err) {
         console.log(_err);
-        res.status(401).send(" you don't have permission to edit");
+        res.status(500).send("Error during user update");
     }
 });
-
-
-
-
 
 /*
 ENDPOINT: Remove User
@@ -179,8 +183,7 @@ RETURN:
  - OK: 200
  - ...
 */
-
-router.delete("/users/:id", (req, res) => {
+router.delete("/:id", (req, res) => {
     const token = req.headers.authorization.replace("Bearer ", "");
     const userId = req.params.id;
 
@@ -190,14 +193,12 @@ router.delete("/users/:id", (req, res) => {
         global.dbo.collection("users").removeOne({ _id: mongo.ObjectId(userId) },
             (error, result) => {
                 if (error) throw error;
-                res.send("deleted")
+                res.status(200).send("User deleted");
             });
     } catch (_err) {
         console.log(_err);
-        res.status(401).send(" you don't have permission to delete");
+        res.status(500).send("Error deleting user");
     }
-
-
 })
 
 /*
@@ -211,5 +212,54 @@ RETURN:
  - OK: 200
  - ...
 */
+router.put("/password/:id", (req, res, next) => {
+    const userId = req.params.id;
+    const data = req.body;
+
+    try {
+        if (!req.headers.authorization) {
+            res.status(401).send("Unauthorized");
+            return next();
+        }
+        const token = req.headers.authorization.replace("Bearer ", "");
+        const payload = jwt.verify(token, "mysecret");
+
+        // Check old password is correct
+        query = global.dbo.collection("users").find({ _id: mongo.ObjectId(userId) });
+        query.toArray().then(documents => {
+            if (documents.length === 0) {
+                res.status(400).send("User not exists");
+                return next();
+            }
+            // User exists. Check fields
+            const userDataBase = documents[0];
+
+            // The old password must be correct
+            if (userDataBase.password !== md5(data.oldPassword)) {
+                res.status(400).send("Old Password is incorrect");
+                return next();
+            }
+
+            // Password must be at least 5 characters
+            if (data.newPassword.length < 5) {
+                res.status(400).send("New Password invalid format");
+                return next();
+            }
+
+            global.dbo.collection("users").updateOne({ _id: mongo.ObjectId(userId) }, {
+                $set:
+                {
+                    password: md5(data.newPassword)
+                }
+            }, (error, result) => {
+                if (error) throw error;
+                res.status(200).send("Pasword changed correctly");
+            });
+        });
+    } catch (_err) {
+        console.log(_err);
+        res.status(500).send("Error during the operation");
+    }
+});
 
 module.exports = router;

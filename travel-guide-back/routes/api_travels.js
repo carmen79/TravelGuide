@@ -9,7 +9,9 @@ const mongo = require('mongodb');
 require("../database/mongo_db");
 
 /*
-    ENDPOINT:
+    ENDPOINT: user`s travels
+    PARAMETRES: 
+
 */
 router.get('/', (req, res) => {
     const token = req.headers.authorization.replace("Bearer ", "");
@@ -19,13 +21,13 @@ router.get('/', (req, res) => {
         const payload = jwt.verify(token, "mysecret");
 
         query = global.dbo.collection("travels").find({ userId: payload._id }, {});
-      
+
         query.toArray().then(documents => {
             res.send(documents);
-         
+
         });
     } catch (e) {
-        res.status(401).send("You don't have permission");
+        res.status(500).send("Error getting travels");
     }
 
 });
@@ -56,7 +58,7 @@ router.get('/:id', (req, res) => {
 
 });
 /*
-ENDPOINT:  edit travell
+ENDPOINT:  edit travel
 PARAMETRES:
 -token
 -travelId
