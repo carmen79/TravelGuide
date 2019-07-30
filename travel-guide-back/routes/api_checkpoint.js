@@ -32,6 +32,7 @@ router.post('/', function (req, res) {
             longitud: newCheckpoint.longitud,
             titulo: newCheckpoint.titulo,
             descripcion: newCheckpoint.descripcion
+            
 
             
         }, (error, result) => {
@@ -43,6 +44,10 @@ router.post('/', function (req, res) {
         res.status(401).send("an error has occurd");
     }
 });
+
+
+/* ENDPOINT:get check point to edit
+*/
 
  
 
