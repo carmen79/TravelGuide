@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "500f50a1-a85f-43b1-a42a-b6c82051da0a",
+		"_postman_id": "8fc668df-c729-40e4-b18a-e107bfcf906c",
 		"name": "Travel Guide Backend",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -35,6 +35,50 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n\t\"email\": \"carmen@carmen.com\",\n\t\"password\": \"Carmen\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login OK Jorge",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ce69d7a2-943f-46e4-a34c-90a4dc67ea9c",
+								"exec": [
+									"tests[\"Status Code 200 after correct login\"] = responseCode.code === 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"jorge.ruiz@gmail.com\",\n\t\"password\": \"Jorge3\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:3000/api/users/login",
@@ -232,8 +276,256 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "http://localhost:3000/api/users",
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\" : \"Marina\",\n\t\"password\": \"Marina\",\n\t\"email\": \"marina@marina.com\",\n\t\"photo\": \"photo\"\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
 				}
 			]
+		},
+		{
+			"name": "Update password",
+			"item": [
+				{
+					"name": "Update user password without token",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"oldPassword\": \"Jorge\",\n\t\"newPassword\": \"Jorge2\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/password/5d13c697bac57043e835f5ca",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"password",
+								"5d13c697bac57043e835f5ca"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user password valid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDEzYzY5N2JhYzU3MDQzZTgzNWY1Y2EiLCJ1c2VybmFtZSI6IkpvcmdlIiwiZW1haWwiOiJqb3JnZS5ydWl6QGdtYWlsLmNvbSIsImFkbWluIjpmYWxzZSwiaWF0IjoxNTY0NDE1NTczLCJleHAiOjE1NjQ0MTkxNzN9.JnSJO192hO9Kvdmyos2v3ghQtW6j4s-smCEmdjFrETo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"oldPassword\": \"Jorge\",\n\t\"newPassword\": \"Jorge2\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/password/5d13c697bac57043e835f5ca",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"password",
+								"5d13c697bac57043e835f5ca"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update password user not exists",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDEzYzY5N2JhYzU3MDQzZTgzNWY1Y2EiLCJ1c2VybmFtZSI6IkpvcmdlIiwiZW1haWwiOiJqb3JnZS5ydWl6QGdtYWlsLmNvbSIsImFkbWluIjpmYWxzZSwiaWF0IjoxNTY0NDE1NTczLCJleHAiOjE1NjQ0MTkxNzN9.JnSJO192hO9Kvdmyos2v3ghQtW6j4s-smCEmdjFrETo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"oldPassword\": \"Jorge2\",\n\t\"newPassword\": \"Jorge\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/password/5d13c697bac57043e835f5cb",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"password",
+								"5d13c697bac57043e835f5cb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update password old password incorrect",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDEzYzY5N2JhYzU3MDQzZTgzNWY1Y2EiLCJ1c2VybmFtZSI6IkpvcmdlIiwiZW1haWwiOiJqb3JnZS5ydWl6QGdtYWlsLmNvbSIsImFkbWluIjpmYWxzZSwiaWF0IjoxNTY0NDE0MDUzLCJleHAiOjE1NjQ0MTc2NTN9.lm_eCY3O-I9xsiKAQOnESh7iNkhbPwwUv-wE1LoGaUM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"oldPassword\": \"Jorge4\",\n\t\"newPassword\": \"Jorge\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/password/5d13c697bac57043e835f5ca",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"password",
+								"5d13c697bac57043e835f5ca"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update password new password 5 character",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDEzYzY5N2JhYzU3MDQzZTgzNWY1Y2EiLCJ1c2VybmFtZSI6IkpvcmdlIiwiZW1haWwiOiJqb3JnZS5ydWl6QGdtYWlsLmNvbSIsImFkbWluIjpmYWxzZSwiaWF0IjoxNTY0NDE1NTczLCJleHAiOjE1NjQ0MTkxNzN9.JnSJO192hO9Kvdmyos2v3ghQtW6j4s-smCEmdjFrETo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"oldPassword\": \"Jorge\",\n\t\"newPassword\": \"hola\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/password/5d13c697bac57043e835f5ca",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"password",
+								"5d13c697bac57043e835f5ca"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update User",
+			"item": []
 		}
 	]
 }
