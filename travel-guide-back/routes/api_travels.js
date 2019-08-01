@@ -8,16 +8,39 @@ var md5 = require('md5');
 const mongo = require('mongodb');
 require("../database/mongo_db");
 
+
+/*
+    ENDPOINT: public travels
+    PARAMETRES: 
+
+*/
+
+// TODO this query has to return only public travel
+router.get('/', (req, res) => {
+    try {
+
+        query = global.dbo.collection("travels").find({ public: true }, {});
+
+        query.toArray().then(documents => {
+            res.send(documents);
+
+        });
+    } catch (e) {
+        res.status(500).send("Error getting travels");
+    }
+});
+
 /*
     ENDPOINT: user`s travels
     PARAMETRES: 
 
 */
-router.get('/', (req, res) => {
-    const token = req.headers.authorization.replace("Bearer ", "");
-    console.log(token);
+router.get('/mytravels', (req, res) => {
 
     try {
+        const token = req.headers.authorization.replace("Bearer ", "");
+        console.log(token);
+
         const payload = jwt.verify(token, "mysecret");
 
         query = global.dbo.collection("travels").find({ userId: payload._id }, {});
@@ -81,7 +104,8 @@ router.put("/:id", (req, res) => {
                 destino: data.destino,
                 fechaInicio: data.fechaInicio,
                 fechaFin: data.fechaFin,
-                descripcion: data.descripcion
+                descripcion: data.descripcion,
+                public: data.public,
             }
         }, (error, result) => {
             if (error) throw error;
@@ -110,6 +134,7 @@ router.post('/', function (req, res) {
             fechaInicio: newtravel.fechaInicio,
             fechaFin: newtravel.fechaFin,
             descripcion: newtravel.descripcion,
+            public: newtravel.public,
             userId: payload._id
         }, (error, result) => {
             if (error) throw error;
@@ -134,7 +159,13 @@ router.delete("/:id", (req, res) => {
         global.dbo.collection("travels").removeOne({ _id: mongo.ObjectId(travelId) },
             (error, result) => {
                 if (error) throw error;
-                res.send("deleted")
+
+                global.dbo.collection("checkpoint").remove({ travelId: travelId },
+                    (error, result) => {
+                        if (error) throw error;
+
+                        res.send("deleted")
+                    });
             });
     } catch (_err) {
         console.log(_err);

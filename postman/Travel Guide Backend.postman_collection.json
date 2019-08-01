@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f9431f75-e3cb-4b2f-b395-9df81364f611",
+		"_postman_id": "ae2da7ee-e043-449b-8891-474d7c8ba88e",
 		"name": "Travel Guide Backend",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -16,7 +16,9 @@
 							"script": {
 								"id": "ce69d7a2-943f-46e4-a34c-90a4dc67ea9c",
 								"exec": [
-									"tests[\"Status Code 200 after correct login\"] = responseCode.code === 200;"
+									"tests[\"Status Code 200 after correct login\"] = responseCode.code === 200;",
+									"postman.setGlobalVariable(\"token\", responseBody);",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -278,7 +280,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:3000/api/users",
+					"name": "Create user with photo",
 					"request": {
 						"auth": {
 							"type": "bearer"
@@ -528,17 +530,17 @@
 			"item": []
 		},
 		{
-			"name": "checkpoint",
+			"name": "Checkpoint",
 			"item": [
 				{
-					"name": "add new checkpoint ok",
+					"name": "Add new checkpoint OK",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDE0ODg5NDljZGIwNTE4YzAxYzhhODQiLCJ1c2VybmFtZSI6IkNhcm1lbiIsImVtYWlsIjoiY2FybWVuQGNhcm1lbi5jb20iLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTU2NDQ4NjY1NywiZXhwIjoxNTY0NDkwMjU3fQ.tHA3lielwo0u4wCA9YuUIgVvlEGheWH_B8BYKwzn478",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -554,7 +556,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"latitud\": \"2012\",\n\t\"longitud\": \"1245\",\n\t\"titulo\": \"visita museo\",\n\t\"descripcion\": \"\"\n\t\n}\n"
+							"raw": "{\n\t\"latitude\": 20.1234567,\n\t\"longitude\": 12.1234567,\n\t\"title\": \"Visita playa\",\n\t\"description\": \"muchas olas\",\n\t\"photo\" :\"/slkdjdif.jpg\",\n\t\"travelId\" : \"5d416ab2a5495300f01db0d1\"\n\t\n}\n"
 						},
 						"url": {
 							"raw": "http://localhost:3000/api/checkpoint/",
@@ -567,6 +569,401 @@
 								"api",
 								"checkpoint",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update checkpoint OK",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"latitude\": 20.1234567,\n\t\"longitude\": 12.1234567,\n\t\"title\": \"Visita playa\",\n\t\"description\": \"muchas olas 2\",\n\t\"photo\" :\"/slkdjdif.jpg\"\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/checkpoint/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"checkpoint",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add checkpoint when travel not exists",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"latitude\": 20.1234567,\n\t\"longitude\": 12.1234567,\n\t\"title\": \"Visita playa\",\n\t\"description\": \"muchas olas\",\n\t\"photo\" :\"/slkdjdif.jpg\",\n\t\"travelId\" : \"nonexistenttravelid\"\n\t\n}\n"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/checkpoint/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"checkpoint",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete checkpoint OK",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/checkpoint/5d40a27fde56393f702a1a44",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"checkpoint",
+								"5d40a27fde56393f702a1a44"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get checkpoint by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/checkpoint/5d41687d36982a43789e2c51",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"checkpoint",
+								"5d41687d36982a43789e2c51"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get checkpoint by Travel Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Travels",
+			"item": [
+				{
+					"name": "list public travel",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/travels",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"travels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new travel ok",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDEzYzIwMGJhYzU3MDQzZTgzNWY1YzgiLCJ1c2VybmFtZSI6IkNhcm1lbiIsImVtYWlsIjoiY2FybWVuQGNhcm1lbi5jb20iLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTU2NDU3NTcxNCwiZXhwIjoxNTY0NTc5MzE0fQ.wGakv9UWqrfeIqmKEucoz2ybe7dNLvR2NalLJ2ezb0I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"destino\":\"Nerja\",\n    \"fechaInicio\": \"02-08-2018\",\n    \"fechaFin\": \"02-09-2018\",\n    \"descripcion\": \"Ver la playa\",\n    \"public\": true,\n    \"userId\": \"5d13c200bac57043e835f5c8\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/travels/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"travels",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get travel by id ok",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDEzYzIwMGJhYzU3MDQzZTgzNWY1YzgiLCJ1c2VybmFtZSI6IkNhcm1lbiIsImVtYWlsIjoiY2FybWVuQGNhcm1lbi5jb20iLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTU2NDU2Mzk4MSwiZXhwIjoxNTY0NTY3NTgxfQ.EBG913fr4fJFpfGQgx7V_-574drV0Nz5N6RHaqzkQhA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/travels/5d4158657b116632c4a8cc60",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"travels",
+								"5d4158657b116632c4a8cc60"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit travel OK",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDEzYzIwMGJhYzU3MDQzZTgzNWY1YzgiLCJ1c2VybmFtZSI6IkNhcm1lbiIsImVtYWlsIjoiY2FybWVuQGNhcm1lbi5jb20iLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTU2NDU2NTk0MSwiZXhwIjoxNTY0NTY5NTQxfQ.9SWZfMCkB_NUJA-wTakPb8KluqG04W4PjlBG0wamaDU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"destino\": \"London\",\n    \"fechaInicio\": \"02-08-2018\",\n    \"fechaFin\": \"02-09-2018\",\n    \"descripcion\": \"visitar a Harry Potter y su familia\",\n    \"public\": \"true\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/travels/5d4158657b116632c4a8cc60",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"travels",
+								"5d4158657b116632c4a8cc60"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete travel OK",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDEzYzIwMGJhYzU3MDQzZTgzNWY1YzgiLCJ1c2VybmFtZSI6IkNhcm1lbiIsImVtYWlsIjoiY2FybWVuQGNhcm1lbi5jb20iLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTU2NDU2NTk0MSwiZXhwIjoxNTY0NTY5NTQxfQ.9SWZfMCkB_NUJA-wTakPb8KluqG04W4PjlBG0wamaDU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"destino\": \"London\",\n    \"fechaInicio\": \"02-08-2018\",\n    \"fechaFin\": \"02-09-2018\",\n    \"descripcion\": \"visitar a Harry Potter y su familia\",\n    \"public\": \"true\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/travels/5d4158657b116632c4a8cc60",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"travels",
+								"5d4158657b116632c4a8cc60"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get my travels",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDEzYzIwMGJhYzU3MDQzZTgzNWY1YzgiLCJ1c2VybmFtZSI6IkNhcm1lbiIsImVtYWlsIjoiY2FybWVuQGNhcm1lbi5jb20iLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTU2NDUwNjQxNiwiZXhwIjoxNTY0NTEwMDE2fQ.f9vY3UgbHixOplGQqNcv1rQNmmyMUl9_kAfttG1k42k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/travels/mytravels",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"travels",
+								"mytravels"
 							]
 						}
 					},
