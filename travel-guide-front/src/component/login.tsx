@@ -1,11 +1,14 @@
 import React from "react";
-// import { connect } from "react-redux";
-// import { setToken } from "../actions";
-// import { IGlobalState } from "../reducers";
-// import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { setToken } from "../Actions/actions";
+import { IGlobalState } from "../Reducers/reducers";
+import { Link } from "react-router-dom";
 
+interface IPropsGlobal {
+    setTokenInterno: (t: string) => void;
+  }
 
-const Login: React.FC<any> = props => {
+const Login: React.FC<IPropsGlobal> = props => {
   const [emailValue, setEmailValue] = React.useState("");
   const [passwordValue, setPasswordValue] = React.useState("");
 
@@ -16,7 +19,7 @@ const Login: React.FC<any> = props => {
     setPasswordValue(event.target.value);
   };
   const getToken = () => {
-    fetch("http://localhost:3000/api/login", {
+    fetch("http://localhost:3000/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -27,7 +30,8 @@ const Login: React.FC<any> = props => {
       .then(token => {
         console.log(token);
         //el token lo tengo y lo tengo que guardar en Redux
-        // props.setTokenInterno(token);
+        props.setTokenInterno(token);
+        // Aquí añadir la sesion storage
 
       });
   };
@@ -65,11 +69,11 @@ const Login: React.FC<any> = props => {
   );
 };
 
-export default Login;
+// export default Login;
 
-// const mapDispatchToProps = { setTokenInterno: setToken };
+const mapDispatchToProps = { setTokenInterno: setToken };
 
-// export default connect(
-//   null,
-//   mapDispatchToProps
-// )(Login);
+export default connect(
+  null,
+  mapDispatchToProps
+)(Login);
