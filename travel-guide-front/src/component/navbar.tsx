@@ -14,15 +14,17 @@ const Navbar: React.FC<any> = props => {
   const a = 1;
   return (
     <nav className="navbar navbar-dark bg-primary">
-      <span className="navbar-brand mb-0 h1">
-        Hello, (a)
-      </span>
+      <span className="navbar-brand mb-0 h1">Hello, (a)</span>
       <ul id="nav-mobile" className="right hide-on-med-and-down">
-        <li id="loginLi"><a href="#modalLogin">Identificarse</a>
+        <li id="loginLi">
+          <a href="#modalLogin">Identificarse</a>
+        </li>
+        <li id="registerLi">
+          <a href="#modalRegister">Registrarse</a>
         </li>
       </ul>
     </nav>
   );
 };
 
-export default Navbar
+export default Navbar;

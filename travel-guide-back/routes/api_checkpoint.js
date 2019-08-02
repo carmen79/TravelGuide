@@ -28,7 +28,7 @@ router.post('/', function (req, res, next) {
         const token = req.headers.authorization.replace("Bearer ", "");
         const payload = jwt.verify(token, "mysecret");
 
-        global.dbo.collection("travels").findOne({ id: newCheckpoint.travelId },
+        global.dbo.collection("travels").findOne({ _id: newCheckpoint.travelId },
             (error, result) => {
                 if (error || !result) {
                     res.status(400).send("Travel not exists");

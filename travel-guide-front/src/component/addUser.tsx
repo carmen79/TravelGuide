@@ -8,9 +8,14 @@ interface IPropsGlobal {
   setTokenInterno: (t: string) => void;
 }
 
-const Login: React.FC<IPropsGlobal> = props => {
+const AddUser: React.FC<IPropsGlobal> = props => {
+  const [userNameValue, setUserNameValue] = React.useState("");
   const [emailValue, setEmailValue] = React.useState("");
   const [passwordValue, setPasswordValue] = React.useState("");
+
+  const updateUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserNameValue(event.target.value);
+  };
 
   const updateEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmailValue(event.target.value);
@@ -19,12 +24,12 @@ const Login: React.FC<IPropsGlobal> = props => {
     setPasswordValue(event.target.value);
   };
   const getToken = () => {
-    fetch("http://localhost:3000/api/users/login", {
+    fetch("http://localhost:3000/api/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ email: emailValue, password: passwordValue })
+      body: JSON.stringify({username: userNameValue, email: emailValue, password: passwordValue })
     })
       .then(res => res.text())
       .then(token => {
@@ -42,10 +47,13 @@ const Login: React.FC<IPropsGlobal> = props => {
     <div >
 
       <div className="card-panel teal lighten-2">
-        <h5 style={styleWhite}>Introduce tus datos</h5>
+        <h5 style={styleWhite}>Datos alta usuario</h5>
       </div>
-
       <div className="form-group">
+        <div className="input-field col s12">
+          <input id="username" className="validate" value={userNameValue} type="text" onChange={updateUserName} />
+          <label htmlFor="username">Nombre</label>
+        </div>
         <div className="input-field col s12">
           <input id="email" className="validate" value={emailValue} type="text" onChange={updateEmail} />
           <label htmlFor="email">Email</label>
@@ -63,25 +71,26 @@ const Login: React.FC<IPropsGlobal> = props => {
 
       <div className="flex-container">
         <div>
-            <button className= "waves-effect waves-light btn" onClick= {getToken}>
-            <i className="material-icons left">account_circle</i>
-            Identificarse
+        <button className= "waves-effect waves-light btn" onClick= {getToken}>
+            <i className="material-icons right">account_circle</i>
+           Enviar
             </button>
         </div>
         <div>
           <a href="#close" className="waves-effect waves-light btn">
             <i className="material-icons left">cancel</i>Cancelar</a>
         </div>
-      </div>
+      
+      
     </div >
+    </div>
   );
 };
 
-// export default Login;
 
 const mapDispatchToProps = { setTokenInterno: setToken };
 
 export default connect(
   null,
   mapDispatchToProps
-)(Login);
+)(AddUser);
