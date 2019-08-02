@@ -5,8 +5,8 @@ import { IGlobalState } from "../Reducers/reducers";
 import { Link } from "react-router-dom";
 
 interface IPropsGlobal {
-    setTokenInterno: (t: string) => void;
-  }
+  setTokenInterno: (t: string) => void;
+}
 
 const Login: React.FC<IPropsGlobal> = props => {
   const [emailValue, setEmailValue] = React.useState("");
@@ -24,7 +24,7 @@ const Login: React.FC<IPropsGlobal> = props => {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ email:emailValue, password: passwordValue })
+      body: JSON.stringify({ email: emailValue, password: passwordValue })
     })
       .then(res => res.text())
       .then(token => {
@@ -35,12 +35,14 @@ const Login: React.FC<IPropsGlobal> = props => {
 
       });
   };
-
+  const styleWhite = {
+    color: 'white'
+  };
   return (
-    <div className="container">
+    <div >
 
       <div className="card-panel teal lighten-2">
-        <h5>Introduce tus datos</h5>
+        <h5 style={styleWhite}>Introduce tus datos</h5>
       </div>
 
       <div className="form-group">
@@ -59,11 +61,15 @@ const Login: React.FC<IPropsGlobal> = props => {
         </div>
       </div>
 
-      <div>
-        <button className="waves-effect waves-light btn-small" onClick={getToken}>
-          <i className="material-icons right">account_circle</i>
-          Login
-          </button>
+      <div className="flex-container">
+        <div>
+          <a href=" javascript:getToken()" className="waves-effect waves-light btn">
+            <i className="material-icons left">account_circle</i>Identificarse</a>
+        </div>
+        <div>
+          <a href="#close" className="waves-effect waves-light btn">
+            <i className="material-icons left">cancel</i>Cancelar</a>
+        </div>
       </div>
     </div >
   );

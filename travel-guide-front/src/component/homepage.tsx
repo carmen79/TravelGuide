@@ -10,9 +10,8 @@ import Navbar from "./navbar";
 const Homepage: React.FC<any> = props => {
   return (
     < div >
-      <Navbar />
       <div className="container">
-    
+
       </div>
     </div >
   );

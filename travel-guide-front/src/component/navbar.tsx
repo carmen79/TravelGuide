@@ -11,11 +11,16 @@ import { IGlobalState } from "../Reducers/reducers";
 // son props del padre que uso en el hijo
 
 const Navbar: React.FC<any> = props => {
+  const a = 1;
   return (
     <nav className="navbar navbar-dark bg-primary">
       <span className="navbar-brand mb-0 h1">
-        Hello, ()
+        Hello, (a)
       </span>
+      <ul id="nav-mobile" className="right hide-on-med-and-down">
+        <li id="loginLi"><a href="#modalLogin">Identificarse</a>
+        </li>
+      </ul>
     </nav>
   );
 };
