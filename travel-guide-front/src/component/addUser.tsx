@@ -29,7 +29,7 @@ const AddUser: React.FC<IPropsGlobal> = props => {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({username: userNameValue, email: emailValue, password: passwordValue })
+      body: JSON.stringify({ username: userNameValue, email: emailValue, password: passwordValue })
     })
       .then(res => res.text())
       .then(token => {
@@ -71,18 +71,18 @@ const AddUser: React.FC<IPropsGlobal> = props => {
 
       <div className="flex-container">
         <div>
-        <button className= "waves-effect waves-light btn" onClick= {getToken}>
+          <button className="waves-effect waves-light btn" onClick={getToken}>
             <i className="material-icons right">account_circle</i>
-           Enviar
+            Enviar
             </button>
         </div>
         <div>
-          <a href="#close" className="waves-effect waves-light btn">
+          <a href="/close" className="waves-effect waves-light btn">
             <i className="material-icons left">cancel</i>Cancelar</a>
         </div>
-      
-      
-    </div >
+
+
+      </div >
     </div>
   );
 };

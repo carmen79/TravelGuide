@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { IGlobalState } from "../Reducers/reducers";
 import Navbar from "./navbar";
+import CitiesAutoComplete from "./cities_autocomplete";
 
 
 // Esto viene de la APP que es donde he decodificado el token
@@ -9,11 +10,7 @@ import Navbar from "./navbar";
 
 const Homepage: React.FC<any> = props => {
   return (
-    < div >
-      <div className="container">
-
-      </div>
-    </div >
+    <div><CitiesAutoComplete /></div>
   );
 };
 
