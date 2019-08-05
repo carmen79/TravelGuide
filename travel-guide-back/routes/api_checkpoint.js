@@ -50,6 +50,7 @@ router.post('/', function (req, res, next) {
 
     } catch (_err) {
         console.log(_err);
+     
         res.status(401).send("Invalid credentials");
     }
 });

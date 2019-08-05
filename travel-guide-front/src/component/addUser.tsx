@@ -80,8 +80,7 @@ const AddUser: React.FC<IPropsGlobal> = props => {
           <a href="#close" className="waves-effect waves-light btn">
             <i className="material-icons left">cancel</i>Cancelar</a>
         </div>
-      
-      
+       
     </div >
     </div>
   );
