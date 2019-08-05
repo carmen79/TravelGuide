@@ -1,8 +1,8 @@
-import React from "react";
 import { connect } from "react-redux";
 import { setToken } from "../Actions/actions";
 import { IGlobalState } from "../Reducers/reducers";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps, Redirect } from "react-router-dom";
+import React, { useEffect } from "react";
 
 interface IPropsGlobal {
   setTokenInterno: (t: string) => void;
@@ -18,6 +18,7 @@ const Login: React.FC<IPropsGlobal> = props => {
   const updatePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPasswordValue(event.target.value);
   };
+
   const getToken = () => {
     fetch("http://localhost:3000/api/users/login", {
       method: "POST",
@@ -29,18 +30,16 @@ const Login: React.FC<IPropsGlobal> = props => {
       .then(res => res.text())
       .then(token => {
         console.log(token);
-        //el token lo tengo y lo tengo que guardar en Redux
-        props.setTokenInterno(token);
-        // Aquí añadir la sesion storage
 
+        props.setTokenInterno(token);
       });
   };
   const styleWhite = {
     color: 'white'
   };
+
   return (
     <div >
-
       <div className="card-panel teal lighten-2">
         <h5 style={styleWhite}>Introduce tus datos</h5>
       </div>
@@ -63,21 +62,19 @@ const Login: React.FC<IPropsGlobal> = props => {
 
       <div className="flex-container">
         <div>
-            <button className= "waves-effect waves-light btn" onClick= {getToken}>
+          <button className="waves-effect waves-light btn" onClick={getToken}>
             <i className="material-icons left">account_circle</i>
             Identificarse
             </button>
         </div>
         <div>
-          <a href="#close" className="waves-effect waves-light btn">
+          <a href="/close" className="waves-effect waves-light btn">
             <i className="material-icons left">cancel</i>Cancelar</a>
         </div>
       </div>
     </div >
   );
 };
-
-// export default Login;
 
 const mapDispatchToProps = { setTokenInterno: setToken };
 
