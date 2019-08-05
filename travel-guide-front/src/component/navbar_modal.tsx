@@ -30,46 +30,47 @@ const NavbarModal: React.FC<IPropsGlobal> = props => {
     props.setToken(null);
   }
 
-  const triggerLogin = <Button><i className="small material-icons left">account_circle</i>Identificarse</Button>;
-  const triggerAddUser = <Button><i className="small material-icons left">add_circle_outline</i>Registrarse</Button>;
+  function beforeClose () {
+    console.log("Before closing the login");
+  }
+
+  const triggerLogin = <Button className="waves-effect waves-light green lighten-2"><i className="small material-icons left">account_circle</i>Identificarse</Button>;
+  const triggerAddUser = <Button className="waves-effect waves-light green lighten-2"><i className="small material-icons left">add_circle_outline</i>Registrarse</Button>;
 
   function renderNoUser() {
     return (
-      <div>
-        <span className="navbar-brand mb-0 h1">Hola, a qué esperas para entrar en nuestra web!!!</span>
         <ul id="nav-mobile" className="right hide-on-med-and-down">
-          <li>
-            <Modal trigger={triggerLogin} actions={null} >
+          <li className="navbar-brand mb-0 h1">Hola, a qué esperas para entrar en nuestra web!!!</li>
+          <li className="navbar-brand mb-0 h1">
+            <Modal trigger={triggerLogin} actions={null} options={{onCloseStart : beforeClose()}} >
               <Login />
             </Modal>
           </li>
-          <li>
+          <li className="navbar-brand mb-0 h1">
             <Modal trigger={triggerAddUser} actions={null} >
               <AddUser />
             </Modal>
           </li>
         </ul>
-      </div >
     );
   }
   function renderUser() {
     return (
-      <div>
-        <span className="navbar-brand mb-0 h1">Hola {userName}!</span>
         <ul id="nav-mobile" className="right hide-on-med-and-down">
+          <li className="navbar-brand mb-0 h1">Hola {userName}!</li>
           <li id="loginLi">
             <button className="waves-effect waves-light btn" onClick={removeToken}>
               Cerrar Sesión
             </button>
           </li>
-
         </ul>
-      </div>);
+     );
   }
 
   return (
 
-    <nav className="navbar navbar-dark bg-primary">
+    <nav className="nav-wrapper">
+      <a href="" className="brand-logo">Logo</a>
       {!props.token && renderNoUser()}
       {props.token && renderUser()}
     </nav>

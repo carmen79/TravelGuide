@@ -77,8 +77,8 @@ const AddUser: React.FC<IPropsGlobal> = props => {
             </button>
         </div>
         <div>
-          <a href="/close" className="waves-effect waves-light btn">
-            <i className="material-icons left">cancel</i>Cancelar</a>
+          <button className="modal-close waves-effect waves-light btn">
+            <i className="material-icons left">cancel</i>Cancelar</button>
         </div>
 
 
