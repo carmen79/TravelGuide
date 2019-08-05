@@ -11,14 +11,14 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 const App: React.FC = () => {
   return (
-    <div >
-      <NavbarModal />
-      <div className="container">
-        <Homepage />
-      </div>
-    </div>
+    <BrowserRouter>
 
+      <Route path="/" component={NavbarModal} />
+      <Route path="/" exact component={Homepage} />
+
+    </BrowserRouter>
   );
+
 }
 
 export default App;
