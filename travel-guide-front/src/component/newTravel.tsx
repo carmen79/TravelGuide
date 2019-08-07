@@ -1,5 +1,5 @@
 import React from "react";
-import { ITravel} from "../interfaces";
+import { ITravel } from "../interfaces";
 import { IGlobalState } from "../Reducers/reducers";
 import { connect } from "react-redux";
 import { RouteComponentProps, Redirect } from "react-router-dom";
@@ -42,7 +42,7 @@ const NewTravel: React.FC<IPropsGlobal & RouteComponentProps> = props => {
       body: JSON.stringify({
         destino: destinoValue,
         fechaInicio: fechaInicioValue,
-        fechaFin: fechaFinValue, 
+        fechaFin: fechaFinValue,
         descripcion: descripcionValue
       })
     }).then(res => {
@@ -64,11 +64,11 @@ const NewTravel: React.FC<IPropsGlobal & RouteComponentProps> = props => {
         </div>
         <div>
           <h5>Fecha Inicio</h5>
-          <input value={fechaInicioValue} type="text" onChange={updateFechaInicio} />
+          <input value={fechaInicioValue} type="date" onChange={updateFechaInicio} />
         </div>
         <div>
           <h5>Fecha Fin</h5>
-          <input value={fechaFinValue} type="text" onChange={updateFechaFin} />
+          <input value={fechaFinValue} type="date" onChange={updateFechaFin} />
         </div>
         <div>
           <h5>Descripción</h5>

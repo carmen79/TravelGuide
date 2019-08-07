@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { IGlobalState } from "../Reducers/reducers";
-import Navbar from "./navbar";
 import cities from "cities.json";
 import { Autocomplete } from 'react-materialize';
 

@@ -27,3 +27,22 @@ body, html {
 .flex-container > div {
   margin: 20px;
 }
+
+.imguser {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  
+}
+
+.mynav.back {
+  background-color: #9fa8a3 !important;
+}
+
+.mybuttonnav.back {
+  background-color: #e3e0cf !important;
+}
+
+.mybutton.back {
+  background-color: #c5d5cb !important;
+}

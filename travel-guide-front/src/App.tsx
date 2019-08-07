@@ -1,6 +1,5 @@
 import React from 'react';
 import Login from './component/login'
-import Navbar from './component/navbar'
 import NavbarModal from './component/navbar_modal'
 import AddUser from './component/addUser'
 // import jwt from "jsonwebtoken";
@@ -16,7 +15,6 @@ const App: React.FC = () => {
 
       <Route path="/" component={NavbarModal} />
       <Route path="/" exact component={Homepage} />
-      <Route path="/" exact component={NewTravel} />
     
     </BrowserRouter>
   );

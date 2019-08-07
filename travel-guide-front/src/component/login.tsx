@@ -10,11 +10,11 @@ interface IPropsGlobal {
   setTokenInterno: (t: string) => void;
 }
 
-const Login: React.FC<IPropsGlobal> = props => {
+const Login: React.FC<IPropsGlobal & RouteComponentProps> = props => {
   const [emailValue, setEmailValue] = React.useState("");
   const [passwordValue, setPasswordValue] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
-  const [addUser, setAddUser] = React.useState(false);
+  
 
   const updateEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmailValue(event.target.value);
@@ -37,6 +37,7 @@ const Login: React.FC<IPropsGlobal> = props => {
         res.text().then (token => {
           console.log(token);
           props.setTokenInterno(token);
+          props.history.push("/userProfile");
         })
       } else {
         setErrorMessage("Error en la identificación de usuario");
@@ -51,18 +52,13 @@ const Login: React.FC<IPropsGlobal> = props => {
     console.log("Call update password and send an email");
   }
 
-  function clickAddUser () {
-    setAddUser(true);
-  }
+  const styleWhite = {
+    color: 'white'
+  };
 
-  function openAddUser() {
-    return <AddUser />
-  }
-
-  function openLogin() {
-    return  (
+  return (
     <div >
-      <div className="card-panel teal lighten-2">
+      <div className="card-panel mynav back">
         <h5 style={styleWhite}>Introduce tus datos</h5>
       </div>
 
@@ -81,43 +77,26 @@ const Login: React.FC<IPropsGlobal> = props => {
           <label htmlFor="password">Password</label>
         </div>
         <div className="row red darken-2" style={styleWhite}>{errorMessage}</div>
-        {errorMessage && 
           <div className="row">
-            <div className="col s1 left-align tiny">¿Has olvidado tu password? Crea un nuevo password &nbsp; 
-              <a href="/resetPassword" onClick={clickForgetPassword} className="modal-close btn-floating pulse"><i className="material-icons tiny">sync</i></a>
+            <div className="col s1 left-align tiny">¿Has olvidado tu password? Crea un nuevo password 
+              <a href="/resetPassword" onClick={clickForgetPassword} className="modal-close">&nbsp;aquí</a>
             </div>
-            <div className="col s2 right-align tiny">¿Aún no eres usuario? Date de alta aquí! &nbsp; 
-              <a onClick={clickAddUser} className="btn-floating pulse"><i className="material-icons tiny">add</i></a>
-            </div>        
           </div>
-        }
       </div>
 
       <div className="flex-container">
         <div>
-          <button className="waves-effect waves-light btn" onClick={getToken}>
+          <button className="waves-effect waves-light btn mynav back" onClick={getToken}>
             <i className="material-icons left">account_circle</i>
             Identificarse
             </button>
         </div>
         <div>
-          <button className="modal-close waves-effect waves-light btn">
+          <button className="modal-close waves-effect waves-light btn mynav back">
             <i className="material-icons left">cancel</i>Cancelar</button>
         </div>
       </div>
-    </div >);
-            
-  }
-
-  const styleWhite = {
-    color: 'white'
-  };
-
-  return (
-    <div>
-    {!addUser && openLogin()}
-    {addUser && openAddUser()}
-    </div>
+    </div >
   );
 };
 
