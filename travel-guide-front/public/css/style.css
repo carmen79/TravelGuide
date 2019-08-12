@@ -21,22 +21,59 @@ body, html {
   display: flex;
   justify-content: center;
   padding: 10px;
+  width: 100%;
   
+}
+
+.flex-container.left {
+  justify-content: left;
 }
 
 .flex-container > div {
   margin: 20px;
 }
 
+.mylogo {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+}
+
 .imguser {
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  
 }
 
+.imgusercard {
+  border-radius: 60%;
+  width: 80px;
+  height: 80px;
+  position: relative;
+  z-index: 100;
+  margin-top: -40px;
+}
+
+.imgcardback {
+  background-image: url("/img/usercardback3.jpg");
+  width: 300px;
+  height: 250px;
+}
+
+.mynav.profile {
+  vertical-align: middle;
+  padding: 5px;
+  padding-right: 15px;
+  height: 56px;
+  line-height: 45px;
+}
 .mynav.back {
   background-color: #9fa8a3 !important;
+  color: white;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .mybuttonnav.back {
@@ -44,5 +81,5 @@ body, html {
 }
 
 .mybutton.back {
-  background-color: #c5d5cb !important;
+  background-color: #9fa8a3 !important;
 }

@@ -12,7 +12,7 @@ import NewTravel from "./newTravel";
 const Homepage: React.FC<any> = props => {
   return (
     <div>
-      hola METER AQUI EL COMPNENTE DE PROFLE
+      <h2>HELLO!! Bienvenido a Travel Experiences</h2>
     </div>
 
   );

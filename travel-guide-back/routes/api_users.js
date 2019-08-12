@@ -7,6 +7,17 @@ var jwt = require("jsonwebtoken")
 var md5 = require('md5');
 const mongo = require('mongodb');
 require("../database/mongo_db");
+const multer = require('multer');
+
+var storage = multer.diskStorage(
+    {
+        destination: 'public/avatar/',
+        filename: function (req, file, cb) {
+            cb(null, Date.now() + '-' + file.originalname);
+        }
+    }
+);
+var upload = multer({ storage: storage })
 
 /*
 ENDPOINT: User Login 
@@ -42,11 +53,11 @@ router.post('/login', function (req, res) {
 
                     },
                     "mysecret",
-                    {
-                        expiresIn: 3600
-                    }
-                ); console.log(token)
-                res.status(200).send(token);
+
+                );
+                console.log(token)
+                var myResponse = { token: token, user: documents[0] };
+                res.status(200).send(myResponse);
             } else {
                 res.status(401).send("Invalid credentials");
             }
@@ -70,7 +81,7 @@ router.post('/', function (req, res) {
     const newUser = req.body;
 
     try {
-        const query = global.dbo.collection("users").find({
+        let query = global.dbo.collection("users").find({
             email: req.body.email,
 
         });
@@ -78,13 +89,16 @@ router.post('/', function (req, res) {
             if (documents.length > 0) {
                 res.status(400).send("User alredy exists");
 
+            } else if (newUser.password.length < 5) {
+                res.status(400).send("Incorrect password format");
             } else {
                 global.dbo.collection("users").insertOne({
                     username: newUser.username,
                     password: md5(newUser.password),
                     admin: false,
                     email: newUser.email,
-                    photo: newUser.photo
+                    description: newUser.description,
+                    time: Date.now()
                 }, (error, result) => {
                     if (error) throw error;
                     var token = jwt.sign(
@@ -95,11 +109,17 @@ router.post('/', function (req, res) {
                             admin: newUser.admin ? true : false
                         },
                         "mysecret",
-                        {
-                            expiresIn: 3600
-                        }
-                    ); console.log(token)
-                    res.send(token);
+
+                    );
+
+                    console.log(token)
+
+                    query = global.dbo.collection("users").find({ _id: mongo.ObjectId(result.insertedId) });
+                    query.toArray().then(documents => {
+                        var myResponse = { token: token, user: documents[0] };
+                        res.status(200).send(myResponse);
+
+                    });
                 });
             }
         });
@@ -160,8 +180,7 @@ router.put("/:id", (req, res) => {
             $set:
             {
                 username: data.username,
-                email: data.email,
-                photo: data.photo
+                email: data.email
             }
         }, (error, result) => {
             if (error) throw error;
@@ -261,5 +280,38 @@ router.put("/password/:id", (req, res, next) => {
         res.status(500).send("Error during the operation");
     }
 });
+/*
+ENDPOINT: ADD PHOTO
+*/
+router.post('/avatar/:id', upload.single('avatar'), (req, res, next) => {
+    const userId = req.params.id;
+    const file = req.file;
+    if (!file) {
+        res.status(400).send("Incorrect file");
+        return next();
+    }
+    console.log("Ruta de la imagen para guardar en BBDD: " + file.filename);
+
+    try {
+        const token = req.headers.authorization.replace("Bearer ", "");
+        const payload = jwt.verify(token, "mysecret");
+        global.dbo.collection("users").updateOne({ _id: mongo.ObjectId(userId) }, {
+            $set:
+            {
+                avatar: file.filename
+            }
+        }, (error, result) => {
+            if (error) throw error;
+            query = global.dbo.collection("users").find({ _id: mongo.ObjectId(userId) });
+            query.toArray().then(documents => {
+                res.status(200).send(documents[0]);
+            });
+        });
+
+    } catch (_err) {
+        console.log(_err);
+        res.status(500).send("Error during user update");
+    }
+})
 
 module.exports = router;

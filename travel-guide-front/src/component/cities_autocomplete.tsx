@@ -1,19 +1,20 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { IGlobalState } from "../Reducers/reducers";
+import React from "react";
 import cities from "cities.json";
 import { Autocomplete } from 'react-materialize';
 
-// Esto viene de la APP que es donde he decodificado el token
-// son props del padre que uso en el hijo
-
 const CitiesAutoComplete: React.FC<any> = props => {
-  const c = { cab: null, bac: null };
+  var citiesString = "{";
+
+  cities.map( city => {
+    citiesString += "\"" + city.name + "\" : null, ";
+  });
+  citiesString += " \"null\" : null}";
+  var myCitiesJson = JSON.parse(citiesString);
+
+  const c = { Google: '', Apple: '', Microsoft: '' };
   return (
-    <div>
-      <h1> Example for materialize autocomplete</h1>
       <Autocomplete options={{
-        data: { 'Google': '', 'Apple': '', 'Microsoft': '' },
+        data: myCitiesJson,
         minLength: 2,
         limit: 10
       }}
@@ -21,7 +22,6 @@ const CitiesAutoComplete: React.FC<any> = props => {
         icon="location_on"
         id="auto"
       />
-    </div>
   );
 };
 

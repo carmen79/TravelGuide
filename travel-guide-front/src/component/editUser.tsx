@@ -1,13 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
-import { setToken, setUser } from "../Actions/actions";
 import { IGlobalState } from "../Reducers/reducers";
-import { Link, RouteComponentProps, Redirect } from "react-router-dom";
-import { IUser } from "../interfaces";
+import { RouteComponentProps } from "react-router-dom";
+import { IUser } from '../interfaces'
+import { setUser } from "../Actions/actions";
 
 interface IPropsGlobal {
+  token: string;
+  user: IUser;
   setTokenInterno: (t: string) => void;
-  setUserInterno: (u: IUser) => void;
 }
 
 const AddUser: React.FC<IPropsGlobal & RouteComponentProps> = props => {
@@ -34,7 +35,7 @@ const AddUser: React.FC<IPropsGlobal & RouteComponentProps> = props => {
 
   const getToken = () => {
     if (passwordValue !== confirmationPasswordValue) {
-      setErrorMessage("Error: Password no coincide");
+      setErrorMessage("ERROR PAD INC");
     } else {
 
       fetch("http://localhost:3000/api/users", {
@@ -47,10 +48,9 @@ const AddUser: React.FC<IPropsGlobal & RouteComponentProps> = props => {
         .then(res => {
           console.log("Response from login:" + res)
           if (res.ok) {
-            res.json().then(response => {
-
-              props.setTokenInterno(response.token);
-              props.setUserInterno(response.user)
+            res.text().then(token => {
+              console.log(token);
+              props.setTokenInterno(token);
               props.history.push("/userProfile");
             })
           } else if (res.status === 400) {
@@ -125,9 +125,13 @@ const AddUser: React.FC<IPropsGlobal & RouteComponentProps> = props => {
 };
 
 
-const mapDispatchToProps = { setTokenInterno: setToken, setUserInterno: setUser };
+const mapDispatchToProps = { setUserInterno: setUser };
+const mapStateToProps = (state: IGlobalState) => ({
+  token: state.token,
+  user: state.user
+});
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(AddUser);

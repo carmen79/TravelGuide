@@ -1,4 +1,5 @@
 import { ITravel } from "../interfaces";
+import { IUser } from "../interfaces";
 
 
 
@@ -7,6 +8,10 @@ type TSetTokenAction = {
   token: string;
 };
 
+type TSetUserAction = {
+  type: "SET_USER";
+  user: IUser;
+};
 type TAddTravelAction = {
   type: "ADD_TRAVEL";
   travel: ITravel;
@@ -14,5 +19,5 @@ type TAddTravelAction = {
 
 export type TAction =
   | TSetTokenAction
-  | TAddTravelAction
- 
+  | TSetUserAction
+  | TAddTravelAction 
