@@ -1,4 +1,5 @@
 export interface ITravel {
+ 
     _id: string;
     destino: string;
     fechaInicio: Date;

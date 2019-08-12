@@ -18,6 +18,9 @@ export const travelReducer = (
     state.push(action.travel)
     return [...state];
   }
+  if (action.type === "SET_TRAVEL") {
+    return action.travels
+  }
 
   return state
 }

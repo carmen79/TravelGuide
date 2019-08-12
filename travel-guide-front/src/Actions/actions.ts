@@ -17,3 +17,8 @@ export const addTravel: ActionCreator<TAction> = (travel: ITravel) => ({
   travel: travel
 });
 
+export const setTravel: ActionCreator<TAction> = (travels: ITravel[]) => ({
+  type: "SET_TRAVEL",
+  travels: travels
+});
+

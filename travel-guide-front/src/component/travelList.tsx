@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { IGlobalState } from "../Reducers/reducers";
+import { Link } from "react-router-dom";
+import { ITravel } from '../interfaces';
+import { setTravel } from "../Actions/actions";
 
 interface IPropsGlobal {
   token: string;
+  travel: ITravel[];
+  setTravel: (travels: ITravel []) => void;
 }
 
 const TravelList: React.FC<IPropsGlobal> = props => {
-
-  const [travels, setTravels] = React.useState([]);
-
 
   const getTravels = () => {
     if (props.token) {
@@ -21,9 +23,9 @@ const TravelList: React.FC<IPropsGlobal> = props => {
         }
       }).then(res => {
         if (res.ok) {
-          res.json().then(travelsBd => {
-            console.log(travelsBd);
-            setTravels(travelsBd);
+          res.json().then(travels => {
+            console.log(travels);
+            props.setTravel(travels);
           });
         }
       });
@@ -33,24 +35,37 @@ const TravelList: React.FC<IPropsGlobal> = props => {
   useEffect(() => {
     getTravels();
   }, []);
-
+ 
 
   return (
     <div>
-      {(travels && travels.length > 0) &&
-        <div>Pintar los travels</div>
+      {(props.travel && props.travel.length > 0) &&
+       <div className="container">
+       {props.travel.map((t:any) =>  (
+         <div className="row" key={t.destino}>
+           <div className="col-4">
+             <Link to={"/travels/" + t._id}>
+               {t.destino}
+             </Link>
+           </div>
+         </div>
+       ))}
+    
+     </div>
       }
-      {(!travels || travels.length == 0) &&
-        <div>A qué esperas para dar de alta un viaje!!!</div>
+      {(!props.travel || props.travel.length == 0) &&
+        <div> Ya puedes dar de alta tu primer viaje!!!</div>
       }
     </div>
   );
 };
 
 
+const mapDispatchToProps = { setTravel: setTravel };
 
 const mapStateToProps = (state: IGlobalState) => ({
-  token: state.token
+  token: state.token,
+  travels:state.travels
 
 });
-export default connect(mapStateToProps)(TravelList);
+export default connect(mapStateToProps, mapDispatchToProps )(TravelList);
