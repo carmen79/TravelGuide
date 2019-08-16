@@ -21,6 +21,11 @@ export const travelReducer = (
   if (action.type === "SET_TRAVEL") {
     return action.travels
   }
+  if (action.type === "REMOVE_TRAVEL") {
+    const index = state.findIndex(t => t._id === action.travel_id);
+    state.splice(index, 1);
+    return [...state];
+  }
 
   return state
 }
