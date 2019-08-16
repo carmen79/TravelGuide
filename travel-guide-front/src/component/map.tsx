@@ -69,6 +69,6 @@ const MapContainer: React.FC<IPropsGlobal> = props => {
 }
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyB7P2-QjVwWHJ9O5yTvA8GB_DVqpzMcOSg",
+  apiKey: "xx",
   language: "ES-es"
 })(MapContainer) 
