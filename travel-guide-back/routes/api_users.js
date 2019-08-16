@@ -180,11 +180,17 @@ router.put("/:id", (req, res) => {
             $set:
             {
                 username: data.username,
-                email: data.email
+                email: data.email,
+                description: data.description
+
             }
         }, (error, result) => {
             if (error) throw error;
-            res.status(200).send(result)
+
+            let query = global.dbo.collection("users").find({ _id: mongo.ObjectId(userId) });
+            query.toArray().then(documents => {
+                res.status(200).send(documents[0]);
+            });
         });
 
     } catch (_err) {

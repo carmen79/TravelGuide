@@ -135,7 +135,9 @@ router.post('/', function (req, res) {
             fechaFin: newtravel.fechaFin,
             descripcion: newtravel.descripcion,
             public: newtravel.public,
-            userId: payload._id
+            userId: payload._id,
+            lat: newtravel.lat,
+            lng: newtravel.lng
         }, (error, result) => {
             if (error) throw error;
             res.send(result.ops[0]);
@@ -164,7 +166,7 @@ router.delete("/:id", (req, res) => {
                     (error, result) => {
                         if (error) throw error;
 
-                        res.send("deleted")
+                        res.status(200).send("deleted")
                     });
             });
     } catch (_err) {
