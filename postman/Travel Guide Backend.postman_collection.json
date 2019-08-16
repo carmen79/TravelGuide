@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ae2da7ee-e043-449b-8891-474d7c8ba88e",
+		"_postman_id": "1563a6e0-d848-462c-8ae1-3cae21b9f1f1",
 		"name": "Travel Guide Backend",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -964,6 +964,53 @@
 								"api",
 								"travels",
 								"mytravels"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Diary",
+			"item": [
+				{
+					"name": "Add new  diary ok",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDEzYzIwMGJhYzU3MDQzZTgzNWY1YzgiLCJ1c2VybmFtZSI6IkNhcm1lbiIsImVtYWlsIjoiY2FybWVuQGNhcm1lbi5jb20iLCJhZG1pbiI6ZmFsc2UsImlhdCI6MTU2NDU3NTcxNCwiZXhwIjoxNTY0NTc5MzE0fQ.wGakv9UWqrfeIqmKEucoz2ybe7dNLvR2NalLJ2ezb0I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"destino\":\"Nerja\",\n    \"fechaInicio\": \"02-08-2018\",\n    \"fechaFin\": \"02-09-2018\",\n    \"descripcion\": \"Ver la playa\",\n    \"public\": true,\n    \"userId\": \"5d13c200bac57043e835f5c8\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/travels/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"travels",
+								""
 							]
 						}
 					},

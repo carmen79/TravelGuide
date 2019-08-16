@@ -6,6 +6,7 @@ var cors = require('cors')
 var apiTravels = require("./routes/api_travels");
 var apiUsers = require("./routes/api_users");
 var apiCheckpoint = require("./routes/api_checkpoint");
+var apiDiary = require ("./routes/api_diary");
 const bodyParser = require('body-parser')
 
 var app = express();
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/api/users', apiUsers);
 app.use('/api/travels', apiTravels);
 app.use('/api/checkpoint', apiCheckpoint);
+app.use('/api/diary',apiDiary)
 
 
 // catch 404 and forward to error handler
