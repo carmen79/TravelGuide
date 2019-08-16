@@ -1,7 +1,7 @@
 import { ActionCreator } from "redux";
 import { TAction } from "./actionTypes";
 import { ITravel } from "../interfaces";
-import {IUser} from "../interfaces";
+import { IUser } from "../interfaces";
 
 
 export const setToken: ActionCreator<TAction> = (token: string) => ({
@@ -17,8 +17,12 @@ export const addTravel: ActionCreator<TAction> = (travel: ITravel) => ({
   travel: travel
 });
 
-export const setTravel: ActionCreator<TAction> = (travels: ITravel[]) => ({
+export const setTravels: ActionCreator<TAction> = (travels: ITravel[]) => ({
   type: "SET_TRAVEL",
   travels: travels
+});
+export const removeTravel: ActionCreator<TAction> = (travel_id: string) => ({
+  type: "REMOVE_TRAVEL",
+  travel_id
 });
 
