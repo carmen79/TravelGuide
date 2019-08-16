@@ -8,130 +8,107 @@ import { setUser } from "../Actions/actions";
 interface IPropsGlobal {
   token: string;
   user: IUser;
-  setTokenInterno: (t: string) => void;
+  setUser: (u: IUser) => void;
 }
 
-const AddUser: React.FC<IPropsGlobal & RouteComponentProps> = props => {
-  const [userNameValue, setUserNameValue] = React.useState("");
-  const [emailValue, setEmailValue] = React.useState("");
-  const [passwordValue, setPasswordValue] = React.useState("");
-  const [confirmationPasswordValue, setConfirmationPasswordValue] = React.useState("");
+const EditUser: React.FC<IPropsGlobal & RouteComponentProps> = props => {
+
+  const [userNameValue, setUserNameValue] = React.useState(props.user.username);
+  const [emailValue, setEmailValue] = React.useState(props.user.email);
+  const [descriptionValue, setDescriptionValue] = React.useState(props.user.description);
   const [errorMessage, setErrorMessage] = React.useState("");
 
   const updateUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("Cambio de user name:" + event.target.value);
     setUserNameValue(event.target.value);
   };
 
   const updateEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmailValue(event.target.value);
   };
-  const updatePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordValue(event.target.value);
-  };
-  const updateConfirmationPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setConfirmationPasswordValue(event.target.value);
+  const updateDescription = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDescriptionValue(event.target.value);
   };
 
+  const send = () => {
+    console.log("SENDDDDD: " + JSON.stringify({ username: userNameValue, email: emailValue, description: descriptionValue }));
+    fetch("http://localhost:3000/api/users/" + props.user._id, {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + props.token,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ username: userNameValue, email: emailValue, description: descriptionValue })
 
-  const getToken = () => {
-    if (passwordValue !== confirmationPasswordValue) {
-      setErrorMessage("ERROR PAD INC");
-    } else {
-
-      fetch("http://localhost:3000/api/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ username: userNameValue, email: emailValue, password: passwordValue })
-      })
-        .then(res => {
-          console.log("Response from login:" + res)
-          if (res.ok) {
-            res.text().then(token => {
-              console.log(token);
-              props.setTokenInterno(token);
-              props.history.push("/userProfile");
-            })
-          } else if (res.status === 400) {
-            res.text().then(text => {
-              setErrorMessage(text);
-              console.log("Error en datos introducidos");
-            });
-          } else {
-            setErrorMessage("Error en los datos de nuevo usuario");
-            console.log("Error en datos introducidos");
-          }
-        }).catch(error => {
-          console.log("Error en datos introducidos " + error);
+    }).then(res => {
+      console.log("Response from update user:" + res)
+      if (res.ok) {
+        res.json().then(response => {
+          props.setUser(response);
+          props.history.push("/userProfile");
         })
-    }
+      } else if (res.status === 400) {
+        res.text().then(text => {
+          setErrorMessage("Error en los datos de usuario");
+          console.log("Error en datos introducidos");
+        });
+      } else {
+        setErrorMessage("Error en los datos de usuario");
+        console.log("Error en datos introducidos");
+      }
+    }).catch(error => {
+      setErrorMessage("Error en los datos de usuario");
+      console.log("Error en datos introducidos " + error);
+    });
 
-  };
+  }
+
+
   const styleWhite = {
     color: 'white'
   };
   return (
-    <div >
+    <div className="container">
 
       <div className="card-panel mynav back">
-        <h5 style={styleWhite}>Datos alta usuario</h5>
+        <h5 style={styleWhite}>Modifica tus datos</h5>
       </div>
       <div className="form-group">
         <div className="input-field col s12">
           <input id="username" className="validate" value={userNameValue} type="text" onChange={updateUserName} />
-          <label htmlFor="username">Nombre</label>
+          <label htmlFor="username">name</label>
         </div>
         <div className="input-field col s12">
           <input id="email" className="validate" value={emailValue} type="email" onChange={updateEmail} />
           <label htmlFor="email">Email</label>
         </div>
         <div className="input-field col s12">
-          <input className="validate" id="password"
-            value={passwordValue}
-            type="password"
-            onChange={updatePassword}
-            data-testid="password_input"
-          />
-          <label htmlFor="password">Password</label>
+          <input id="description" className="validate" value={descriptionValue} type="text" onChange={updateDescription} />
+          <label htmlFor="description">Sobre ti</label>
         </div>
-        <div className="input-field col s12">
-          <input className="validate" id="confirmationPassword"
-            value={confirmationPasswordValue}
-            type="password"
-            onChange={updateConfirmationPassword}
-            data-testid="password_input"
-          />
-          <label htmlFor="password"> Confirme Password</label>
-        </div>
+
         <div className="row red darken-2" style={styleWhite}>{errorMessage}</div>
       </div>
 
       <div className="flex-container">
         <div>
-          <button className="waves-effect waves-light btn mybutton back" onClick={getToken}>
+          <button className="waves-effect waves-light btn mybutton back" onClick={send}>
             <i className="material-icons right">account_circle</i>
-            Enviar
+            Aceptar
             </button>
         </div>
-        <div>
-          <button className="modal-close waves-effect waves-light btn mybutton back">
-            <i className="material-icons left">cancel</i>Cancelar</button>
-        </div>
-
       </div >
     </div>
   );
-};
+}
 
+const mapDispatchToProps = { setUser: setUser };
 
-const mapDispatchToProps = { setUserInterno: setUser };
 const mapStateToProps = (state: IGlobalState) => ({
   token: state.token,
   user: state.user
 });
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddUser);
+  mapStateToProps, mapDispatchToProps
+)(EditUser);

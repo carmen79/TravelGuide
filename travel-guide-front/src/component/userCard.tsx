@@ -5,11 +5,12 @@ import { Modal, Button } from 'react-materialize';
 import { IUser } from '../interfaces'
 import { setUser } from "../Actions/actions";
 import * as Constants from '../Constants';
-import { userInfo } from "os";
+import { ITravel } from '../interfaces';
 
 interface IPropsGlobal {
   token: string;
   user: IUser;
+  travels: ITravel[];
   setUserInterno: (u: IUser) => void;
 }
 
@@ -22,6 +23,10 @@ const UserCard: React.FC<IPropsGlobal> = props => {
     urlPhoto = Constants.URL_PHOTO_AVATAR + props.user.avatar;
   }
   var triggerChangePhoto = <img src={urlPhoto} className="waves-effect waves-light imgusercard" />;
+  var dateFrom = "";
+  if (props.user.time) {
+    dateFrom = new Date(props.user.time).toLocaleDateString();
+  }
 
   const send = () => {
     const data = new FormData();
@@ -52,75 +57,82 @@ const UserCard: React.FC<IPropsGlobal> = props => {
     setFile(event.target.files[0]);
   }
 
-  const myStyle = { width: '300px' };
-
   return (
-    <div>
-      {props.user && render()}
-    </div>
-  );
-
-  function render() {
-    return (
-      <div>
-        <div className="card" style={myStyle}>
-          <div className="card-image imgcardback" >
-            <span className="card-title">{props.user.username}</span>
-          </div>
-          <div className="card-content">
-            <div className="row">
-              <div className="col s1">
-                <Modal trigger={triggerChangePhoto} actions={null}>
-                  <div className="card-panel mynav back">
-                    <h5>Actualiza tu foto de perfil</h5>
-                  </div>
-                  <div className="row">
-                    <form >
-                      <div className="file-field input-field">
-                        <div className="btn">
-                          <span><i className="small material-icons left">add_a_photo</i></span>
-                          <input type="file" onChange={handleFileUpload} />
-                        </div>
-
-                        <div className="file-path-wrapper">
-                          <input className="file-path validate" type="text"
-                            placeholder="Selecciona fichero" />
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-                  <div className="flex-container">
-                    <div>
-                      <Button onClick={send} className="waves-effect waves-light mybuttonnav back modal-close"><i className="small material-icons left">account_circle</i>Cargar foto</Button>
+    <div className="card">
+      <div className="card-image imgusercardback" >
+        <span className="card-title">{props.user.username}</span>
+      </div>
+      <div className="card-content">
+        <div className="row">
+          <div className="col s4">
+            <Modal trigger={triggerChangePhoto} actions={null}>
+              <div className="card-panel mynav back">
+                <h5>Actualiza tu foto de perfil</h5>
+              </div>
+              <div className="row">
+                <form >
+                  <div className="file-field input-field">
+                    <div className="btn">
+                      <span><i className="small material-icons left">add_a_photo</i></span>
+                      <input type="file" onChange={handleFileUpload} />
                     </div>
-                    <div>
-                      <Button className="waves-effect waves-light mybuttonnav back modal-close"><i className="small material-icons left">cancel</i>Cancelar</Button>
+
+                    <div className="file-path-wrapper">
+                      <input className="file-path validate" type="text"
+                        placeholder="Selecciona fichero" />
                     </div>
                   </div>
-                </Modal>
+                </form>
               </div>
-              <div className="col s11 push-s4">
-                {props.user.email}
+              <div className="flex-container">
+                <div>
+                  <Button onClick={send} className="waves-effect waves-light mybuttonnav back modal-close"><i className="small material-icons left">account_circle</i>Cargar foto</Button>
+                </div>
+                <div>
+                  <Button className="waves-effect waves-light mybuttonnav back modal-close"><i className="small material-icons left">cancel</i>Cancelar</Button>
+                </div>
               </div>
-            </div>
+            </Modal>
             <p>
-              {!props.user.description && "Edita tu perfil e introduce una descripción"}
-              {props.user.description && props.user.description}
+              <br /><b>Tu dirección de correo actual:</b><br /><i className="tiny material-icons">email</i> {props.user.email}
+            </p>
+            <p>
+              <br /><b>Sobre ti:</b><br />
+              <i>
+                {!props.user.description && "Edita tu perfil e introduce una descripción para que los usuarios sepan más de ti"}
+                {props.user.description && props.user.description}
+              </i>
+              {dateFrom &&
+                <blockquote>
+                  Compartiendo experiencias desde {dateFrom}
+                </blockquote>
+              }
             </p>
           </div>
-          <div className="card-action">
-            <a href="#">Editar perfil</a>
+          <div className="col s8 ">
+            <h4>Hola {props.user.username}!</h4>
+            <h6>Desde tu perfil podrás modificar tu datos o crear nuevas experiencias para compartir.</h6>
+            <p>
+              {props.travels && props.travels.length > 0 &&
+                "Abajo tienes tu lista de viajes! Puedes verlos o editarlos cuando lo desees."}
+              {!props.travels || props.travels.length === 0 &&
+                "Aún no has dado de alta experiencias, anímate y compártelas en tu red!"}
+            </p>
           </div>
         </div>
       </div>
-
-    );
-  }
-};
+      <div className="card-action">
+        <a href="/editUser">Editar perfil</a>
+        <a href="/newTravel">Inicia tu viaje</a>
+      </div>
+    </div>
+  );
+}
 
 const mapDispatchToProps = { setUserInterno: setUser };
 const mapStateToProps = (state: IGlobalState) => ({
   token: state.token,
-  user: state.user
+  user: state.user,
+  travels: state.travels
 });
 export default connect(mapStateToProps, mapDispatchToProps)(UserCard);
