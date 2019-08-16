@@ -17,10 +17,21 @@ body, html {
   background-size: cover;
 }
 
+.verticalcenter {
+  margin: 0;
+  top: 50%;
+}
+
+.mapStyles {
+    max-width: '300px';
+    max-height: '300px';
+    overflow: 'hidden'
+}
+
 .flex-container {
   display: flex;
   justify-content: center;
-  padding: 10px;
+  padding: 1px;
   width: 100%;
   
 }
@@ -31,6 +42,7 @@ body, html {
 
 .flex-container > div {
   margin: 20px;
+  width: 100%;
 }
 
 .mylogo {
@@ -54,10 +66,20 @@ body, html {
   margin-top: -40px;
 }
 
+.imgusercardback {
+  background-image: url("/img/usercardback4.jpg");
+  width: 100%;
+  height: 150px;
+}
+
 .imgcardback {
   background-image: url("/img/usercardback3.jpg");
   width: 300px;
   height: 250px;
+}
+
+.imgtravelcard {
+  height: 100px;
 }
 
 .mynav.profile {
