@@ -1,32 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { IGlobalState } from "../Reducers/reducers";
-import { setToken } from "../Actions/actions";
+import { setToken, setUser, setTravels } from "../Actions/actions";
 import { RouteComponentProps } from 'react-router-dom'
 import Login from './login'
 import AddUser from './addUser'
 import { Modal, Button } from 'react-materialize';
-import { IUser } from '../interfaces'
+import { IUser, ITravel } from '../interfaces'
 import * as Constants from '../Constants';
+import Confirm from "./cofirm";
 
 
 interface IPropsGlobal {
   token: string;
   user: IUser;
   setToken: (t: string | null) => void;
+  setUser: (u: IUser | null) => void;
+  setTravels: (tv: ITravel | null) => void;
 }
 
 const NavbarModal: React.FC<IPropsGlobal & RouteComponentProps> = props => {
 
   var urlPhoto = "/img/nouser.jpg";
 
-  if (props.user.avatar) {
+  if (props.user && props.user.avatar) {
     urlPhoto = Constants.URL_PHOTO_AVATAR + props.user.avatar;
   }
 
   const removeToken = () => {
-    console.log("SET TOKEN NULL");
     props.setToken(null);
+    props.setUser(null);
+    props.setTravels(null);
     props.history.push("/");
   }
 
@@ -65,34 +69,18 @@ const NavbarModal: React.FC<IPropsGlobal & RouteComponentProps> = props => {
 
   function renderUser() {
     return (
-      <ul id="nav-mobile" className="right hide-on-med-and-down">
+      <ul id="nav-mobile" className="right hide-on-med-and-down ">
         <li className="waves-effect waves-light" onClick={goToUserProfile} >
           <img src={urlPhoto} className="imguser" />
         </li>
         <li className="waves-effect waves-light mynav profile" onClick={goToUserProfile} >
-          {props.user.username}
+          {props.user && props.user.username}
         </li>
         <li id="loginLi">
-          <Modal style={styleHeight} trigger={triggerCloseSesion} actions={null} >
-            <div >
-              <div className="card-panel mynav back">
-                <h5 style={styleWhite} >¿Estás seguro que deseas cerrar la sesión?</h5>
-              </div>
+          <Confirm msg="¿Estás seguro que deseas cerrar la sesión?" callback={removeToken} trigger={triggerCloseSesion}  >
 
-              <div className="flex-container">
-                <div>
-                  <button className="waves-effect waves-light btn mybutton back" onClick={removeToken}>
-                    <i className="material-icons left">check_circle</i>
-                    Sí
-                  </button>
-                </div>
-                <div>
-                  <button className="modal-close waves-effect waves-light btn mybutton back">
-                    <i className="material-icons left">cancel</i>Cancelar</button>
-                </div>
-              </div>
-            </div >
-          </Modal>
+          </Confirm>
+
         </li>
       </ul >
     );
@@ -101,8 +89,8 @@ const NavbarModal: React.FC<IPropsGlobal & RouteComponentProps> = props => {
   return (
 
     <nav className="nav-wrapper mynav back">
-      <a href="/" className="brand-logo">Travel
-       Experiences</a>
+      <a href="/" className="brand-logo">Travel <img height="50px" width="50px" margin-top="12px" src="/img/logotransp.png"></img>
+        &nbsp;Experiences</a>
       {!props.token && renderNoUser()}
       {props.token && renderUser()}
     </nav>
@@ -113,6 +101,6 @@ const mapStateToProps = (state: IGlobalState) => ({
   token: state.token,
   user: state.user
 });
-const mapDispatchToProps = { setToken: setToken };
+const mapDispatchToProps = { setToken: setToken, setUser: setUser, setTravels: setTravels };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavbarModal);

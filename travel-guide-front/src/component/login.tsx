@@ -31,11 +31,8 @@ const Login: React.FC<IPropsGlobal & RouteComponentProps> = props => {
       body: JSON.stringify({ email: emailValue, password: passwordValue })
     })
       .then(res => {
-        console.log("Response from login:" + res)
         if (res.ok) {
           res.json().then(res => {
-            console.log(res.token);
-            console.log(res.user)
             props.setTokenInterno(res.token);
             props.setUserInterno(res.user);
             props.history.push("/userProfile");
@@ -79,21 +76,22 @@ const Login: React.FC<IPropsGlobal & RouteComponentProps> = props => {
         </div>
         <div className="row red darken-2" style={styleWhite}>{errorMessage}</div>
         <div className="row">
-          <div className="col s12 left-align ">¿Has olvidado tu password? Crea un nuevo password
-              <a href="/resetPassword" onClick={clickForgetPassword} className="modal-close">&nbsp;aquí</a>
+          <div className="col s12 left-align ">
+            ¿Aún no te has registrado? Pincha  <a href="/newUser" className="modal-close">&nbsp;aquí</a> para registrarte
+
           </div>
         </div>
       </div>
 
       <div className="flex-container">
         <div>
-          <button className="waves-effect waves-light btn mybutton back" onClick={getToken}>
+          <button className="waves-effect waves-light btn mybuttonnav back" onClick={getToken}>
             <i className="material-icons left">account_circle</i>
             Identificarse
             </button>
         </div>
         <div>
-          <button className="modal-close waves-effect waves-light btn mybutton back">
+          <button className="modal-close waves-effect waves-light btn mybuttonnav back">
             <i className="material-icons left">cancel</i>Cancelar</button>
         </div>
       </div>

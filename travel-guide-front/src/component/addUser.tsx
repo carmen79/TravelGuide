@@ -44,10 +44,10 @@ const AddUser: React.FC<IPropsGlobal & RouteComponentProps> = props => {
         body: JSON.stringify({ username: userNameValue, email: emailValue, password: passwordValue })
       })
         .then(res => {
-          console.log("Response from login:" + res)
           if (res.ok) {
             res.json().then(response => {
 
+              console.log("Response from CREATE USER:" + JSON.stringify(response))
               props.setTokenInterno(response.token);
               props.setUserInterno(response.user)
               props.history.push("/userProfile");
@@ -67,6 +67,10 @@ const AddUser: React.FC<IPropsGlobal & RouteComponentProps> = props => {
     }
 
   };
+  const goToHome = () => {
+    props.history.push("/");
+  }
+
   const styleWhite = {
     color: 'white'
   };
@@ -108,13 +112,13 @@ const AddUser: React.FC<IPropsGlobal & RouteComponentProps> = props => {
 
       <div className="flex-container">
         <div>
-          <button className="waves-effect waves-light btn mybutton back" onClick={getToken}>
-            <i className="material-icons right">account_circle</i>
+          <button className="waves-effect waves-light btn mybuttonnav back" onClick={getToken}>
+            <i className="material-icons left">account_circle</i>
             Enviar
             </button>
         </div>
         <div>
-          <button className="modal-close waves-effect waves-light btn mybutton back">
+          <button className="modal-close waves-effect waves-light btn mybuttonnav back" onClick={goToHome}>
             <i className="material-icons left">cancel</i>Cancelar</button>
         </div>
 

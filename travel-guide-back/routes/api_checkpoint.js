@@ -7,13 +7,23 @@ var jwt = require("jsonwebtoken")
 const mongo = require('mongodb');
 require("../database/mongo_db");
 
+const multer = require('multer');
 
+var storage = multer.diskStorage(
+    {
+        destination: 'public/checkpoint/',
+        filename: function (req, file, cb) {
+            cb(null, Date.now() + '-' + file.originalname);
+        }
+    }
+);
+var upload = multer({ storage: storage })
 
 /*
 ENDPOINT: Add New checkpoint
 PARAMETERS:
--latitude
--longitude
+-lat
+-lng
 -títle
 -descripction
 -photo
@@ -35,11 +45,10 @@ router.post('/', function (req, res, next) {
                     return next();
                 }
                 global.dbo.collection("checkpoint").insertOne({
-                    latitude: newCheckpoint.latitude,
-                    longitude: newCheckpoint.longitude,
+                    lat: newCheckpoint.lat,
+                    lng: newCheckpoint.lng,
                     title: newCheckpoint.title,
                     description: newCheckpoint.description,
-                    photo: newCheckpoint.photo,
                     time: Date.now(),
                     travelId: newCheckpoint.travelId
                 }, (error, result) => {
@@ -53,6 +62,31 @@ router.post('/', function (req, res, next) {
 
         res.status(401).send("Invalid credentials");
     }
+});
+
+router.get('/photos', (req, res) => {
+    const travelIdFromParams = req.query.travelId;
+
+    try {
+        const token = req.headers.authorization.replace("Bearer ", "");
+        console.log(token);
+
+        const payload = jwt.verify(token, "mysecret");
+
+        query = global.dbo.collection("checkpoint").find({ travelId: travelIdFromParams });
+
+        query.toArray().then(documents => {
+            let response = [];
+            documents.map((element) => {
+                response.push(element.photo);
+            });
+            res.status(200).send(response);
+        });
+
+    } catch (err) {
+        res.status(401).send("you don`t have permission");
+    }
+
 });
 
 /* ENDPOINT:get check point to edit
@@ -94,10 +128,6 @@ router.get('/', (req, res) => {
     const travelIdFromParams = req.query.travelId;
 
     try {
-        const token = req.headers.authorization.replace("Bearer ", "");
-        console.log(token);
-
-        const payload = jwt.verify(token, "mysecret");
 
         query = global.dbo.collection("checkpoint").find({ travelId: travelIdFromParams });
 
@@ -111,6 +141,8 @@ router.get('/', (req, res) => {
 
 });
 
+
+
 router.put("/:id", (req, res) => {
     const checkpointId = req.params.id;
     const data = req.body;
@@ -122,11 +154,10 @@ router.put("/:id", (req, res) => {
         global.dbo.collection("checkpoint").updateOne({ _id: mongo.ObjectId(checkpointId) }, {
             $set:
             {
-                latitude: data.latitude,
-                longitude: data.longitude,
+                lat: data.lat,
+                lng: data.lng,
                 title: data.title,
-                description: data.description,
-                photo: data.photo,
+                description: data.description
             }
         }, (error, result) => {
             if (error) throw error;
@@ -160,6 +191,35 @@ router.delete("/:id", (req, res) => {
     }
 })
 
+/*
+ENDPOINT: ADD PHOTO
+*/
+router.put('/:id/photo', upload.single('photo'), (req, res, next) => {
+    const checkPointId = req.params.id;
+    const file = req.file;
+    if (!file) {
+        res.status(400).send("Incorrect file");
+        return next();
+    }
+
+    try {
+        const token = req.headers.authorization.replace("Bearer ", "");
+        const payload = jwt.verify(token, "mysecret");
+        global.dbo.collection("checkpoint").updateOne({ _id: mongo.ObjectId(checkPointId) }, {
+            $set:
+            {
+                photo: file.filename
+            }
+        }, (error, result) => {
+            if (error) throw error;
+            res.status(200).send("OK");
+        });
+
+    } catch (_err) {
+        console.log(_err);
+        res.status(500).send("Error during user update");
+    }
+})
 
 
 module.exports = router;

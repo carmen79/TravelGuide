@@ -8,6 +8,17 @@ var md5 = require('md5');
 const mongo = require('mongodb');
 require("../database/mongo_db");
 
+const multer = require('multer');
+
+var storage = multer.diskStorage(
+    {
+        destination: 'public/travel/',
+        filename: function (req, file, cb) {
+            cb(null, Date.now() + '-' + file.originalname);
+        }
+    }
+);
+var upload = multer({ storage: storage })
 
 /*
     ENDPOINT: public travels
@@ -17,9 +28,15 @@ require("../database/mongo_db");
 
 // TODO this query has to return only public travel
 router.get('/', (req, res) => {
-    try {
+    const city = req.query.city ? req.query.city : "";
+    const category = req.query.category ? req.query.category : "";
 
-        query = global.dbo.collection("travels").find({ public: true }, {});
+    try {
+        query = global.dbo.collection("travels").find({
+            public: true,
+            destino: new RegExp(city),
+            category: new RegExp(category)
+        }, {});
 
         query.toArray().then(documents => {
             res.send(documents);
@@ -63,11 +80,8 @@ PARAMETRES:
 */
 router.get('/:id', (req, res) => {
     const travelsId = req.params.id;
-    const token = req.headers.authorization.replace("Bearer ", "");
-    console.log(token);
 
     try {
-        const payload = jwt.verify(token, "mysecret");
 
         query = global.dbo.collection("travels").find({ _id: mongo.ObjectId(travelsId) });
 
@@ -106,6 +120,9 @@ router.put("/:id", (req, res) => {
                 fechaFin: data.fechaFin,
                 descripcion: data.descripcion,
                 public: data.public,
+                lat: data.lat,
+                lng: data.lng,
+                category: data.category
             }
         }, (error, result) => {
             if (error) throw error;
@@ -126,7 +143,6 @@ router.post('/', function (req, res) {
     const newtravel = req.body;
     const token = req.headers.authorization.replace("Bearer ", "");
 
-
     try {
         const payload = jwt.verify(token, "mysecret");
         global.dbo.collection("travels").insertOne({
@@ -137,7 +153,8 @@ router.post('/', function (req, res) {
             public: newtravel.public,
             userId: payload._id,
             lat: newtravel.lat,
-            lng: newtravel.lng
+            lng: newtravel.lng,
+            category: newtravel.category
         }, (error, result) => {
             if (error) throw error;
             res.send(result.ops[0]);
@@ -176,4 +193,63 @@ router.delete("/:id", (req, res) => {
 
 
 })
+
+/*
+ENDPOINT: ADD PHOTO
+*/
+router.put('/:id/photo', upload.single('photo'), (req, res, next) => {
+    const travelId = req.params.id;
+    const file = req.file;
+    if (!file) {
+        res.status(400).send("Incorrect file");
+        return next();
+    }
+
+    try {
+        const token = req.headers.authorization.replace("Bearer ", "");
+        const payload = jwt.verify(token, "mysecret");
+        global.dbo.collection("travels").updateOne({ _id: mongo.ObjectId(travelId) }, {
+            $set:
+            {
+                photo: file.filename
+            }
+        }, (error, result) => {
+            if (error) throw error;
+            res.status(200).send(file.filename);
+        });
+
+    } catch (_err) {
+        console.log(_err);
+        res.status(500).send("Error during travel update photo");
+    }
+})
+
+/*
+ENDPOINT: ADD SUMMARY
+*/
+router.put('/:id/summary', (req, res, next) => {
+    const travelId = req.params.id;
+    try {
+        const token = req.headers.authorization.replace("Bearer ", "");
+        const payload = jwt.verify(token, "mysecret");
+        global.dbo.collection("travels").updateOne({ _id: mongo.ObjectId(travelId) }, {
+            $set:
+            {
+                summary: req.body.summary
+            }
+        }, (error, result) => {
+            if (error) throw error;
+            query = global.dbo.collection("travels").find({ _id: mongo.ObjectId(travelId) });
+
+            query.toArray().then(documents => {
+                res.send(documents[0]);
+            });
+        });
+
+    } catch (_err) {
+        console.log(_err);
+        res.status(500).send("Error during travel update photo");
+    }
+})
+
 module.exports = router;

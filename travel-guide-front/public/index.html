@@ -29,12 +29,22 @@
   <link type="text/css" rel="stylesheet" href="/css/style.css" />
 
   <title>React App</title>
+  <script>
+    $(document).ready(function () {
+      $('select').material_select();
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('select');
+      var instances = M.FormSelect.init(elems, options);
+    });
+  </script>
 </head>
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
+  <div id="root" class="root"></div>
   <script type="text/javascript" src="/js/materialize.js"></script>
+
 </body>
 
 </html>

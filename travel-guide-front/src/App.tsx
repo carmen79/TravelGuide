@@ -2,21 +2,22 @@ import React from 'react';
 import NavbarModal from './component/navbar_modal'
 import './App.css';
 import Homepage from './component/homepage';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import UserProfile from './component/userProfile';
 import { connect } from "react-redux";
 import { IGlobalState } from "./Reducers/reducers";
-import CitiesAutoComplete from './component/cities_autocomplete';
-import MapContainer from './component/map';
 import NewTravel from './component/newTravel';
 import EditUser from './component/editUser';
-import TravelProfile from './component/travelProfile';
+import TravelView from './component/travelView';
+import UserTravelView from './component/userTravelView';
+import HomeCards from './component/homecards';
+import TravelList from './component/travelList';
+import Footer from './component/footer';
+import addUser from './component/addUser';
 
 interface IPropsGlobalApp {
   token: string;
 }
-
-const latlng = { lat: "36.71681150164842", lng: "-4.410549675933794" }
 
 const App: React.FC<IPropsGlobalApp> = props => {
   return (
@@ -25,11 +26,24 @@ const App: React.FC<IPropsGlobalApp> = props => {
       <Route path="/" component={NavbarModal} />
       {props.token && <Route path="/userProfile" exact component={UserProfile} />}
       <Route path="/" exact component={Homepage} />
-      <Route path="/cities" exact component={CitiesAutoComplete} />
-      <Route path="/map" exact render={(props) => <MapContainer latLng={JSON.stringify(latlng)} />} />
-      <Route path="/newTravel" exact component={NewTravel} />
-      <Route path="/editUser" exact component={EditUser} />
-      <Route path="/travelProfile/:id" component={TravelProfile} />
+      <Route path="/" exact component={HomeCards} />
+      <Route path="/" exact component={Footer} />
+      <Route path="/userTravelView/:id" component={UserTravelView} />
+      <Route path="/travelView/:id" component={TravelView} />
+      <Route path="/travels" component={TravelList} />
+      <Route path="/newUser" component={addUser} />
+
+      {props.token && <Route path="/editUser" exact component={EditUser} />}
+      <Route exact path="/editUser" render={() => (
+        !props.token &&
+        <Redirect to="/" />
+      )} />
+
+      {props.token && <Route path="/newTravel" exact component={NewTravel} />}
+      <Route exact path="/newTravel" render={() => (
+        !props.token &&
+        <Redirect to="/" />
+      )} />
 
     </BrowserRouter>
   );

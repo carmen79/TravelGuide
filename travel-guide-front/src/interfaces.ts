@@ -2,13 +2,16 @@ export interface ITravel {
 
   _id: string;
   destino: string;
-  fechaInicio: Date;
-  fechaFin: Date;
+  fechaInicio: string;
+  fechaFin: string;
   descripcion: string;
   userId: string;
   public: boolean;
-  lat: Number;
-  lng: Number;
+  lat: number;
+  lng: number;
+  category: string;
+  photo: string;
+  summary: string;
 }
 
 export interface IUser {
@@ -22,3 +25,11 @@ export interface IUser {
   time?: number;
 }
 
+export interface ICheckpoint {
+  _id: string;
+  description: string;
+  title: string;
+  lat: number;
+  lng: number;
+  photo: string;
+}

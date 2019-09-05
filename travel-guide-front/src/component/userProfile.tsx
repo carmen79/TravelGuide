@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import UserCard from "./userCard";
-import TravelList from "./travelList"
+import UserTravelList from "./userTravelList"
 
 const UserProfile: React.FC<any> = props => {
   return (
@@ -9,7 +9,7 @@ const UserProfile: React.FC<any> = props => {
         <UserCard />
       </div>
       <div>
-        <TravelList />
+        <UserTravelList />
       </div>
     </div>
 

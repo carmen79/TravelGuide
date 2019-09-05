@@ -3,15 +3,18 @@ import { connect } from "react-redux";
 import { IGlobalState } from "../Reducers/reducers";
 import { Modal, Button } from 'react-materialize';
 import { IUser } from '../interfaces'
-import { setUser } from "../Actions/actions";
+import { setUser, addTravel } from "../Actions/actions";
 import * as Constants from '../Constants';
 import { ITravel } from '../interfaces';
+import NewTravelModal from './newTravelModal'
+import EditUserModal from "./editUserModal";
 
 interface IPropsGlobal {
   token: string;
   user: IUser;
   travels: ITravel[];
   setUserInterno: (u: IUser) => void;
+  addTravel: (travel: ITravel) => void;
 }
 
 const UserCard: React.FC<IPropsGlobal> = props => {
@@ -19,12 +22,12 @@ const UserCard: React.FC<IPropsGlobal> = props => {
 
   var urlPhoto = "/img/nouser.jpg";
 
-  if (props.user.avatar) {
+  if (props.user && props.user.avatar) {
     urlPhoto = Constants.URL_PHOTO_AVATAR + props.user.avatar;
   }
   var triggerChangePhoto = <img src={urlPhoto} className="waves-effect waves-light imgusercard" />;
   var dateFrom = "";
-  if (props.user.time) {
+  if (props.user && props.user.time) {
     dateFrom = new Date(props.user.time).toLocaleDateString();
   }
 
@@ -57,10 +60,15 @@ const UserCard: React.FC<IPropsGlobal> = props => {
     setFile(event.target.files[0]);
   }
 
+  const newTravelCallback = (travel: ITravel) => {
+    props.addTravel(travel);
+  }
+
+  const editUserTrigger = <a href="/editUser">Editar perfil</a>
+  const newTravelTrigger = <a href="/newTravel">Inicia una nueva experiencia</a>
   return (
     <div className="card">
       <div className="card-image imgusercardback" >
-        <span className="card-title">{props.user.username}</span>
       </div>
       <div className="card-content">
         <div className="row">
@@ -100,12 +108,14 @@ const UserCard: React.FC<IPropsGlobal> = props => {
               <br /><b>Sobre ti:</b><br />
               <i>
                 {!props.user.description && "Edita tu perfil e introduce una descripción para que los usuarios sepan más de ti"}
-                {props.user.description && props.user.description}
+                <blockquote>
+                  {props.user.description && props.user.description}
+                </blockquote>
               </i>
               {dateFrom &&
-                <blockquote>
+                <p>
                   Compartiendo experiencias desde {dateFrom}
-                </blockquote>
+                </p>
               }
             </p>
           </div>
@@ -122,14 +132,21 @@ const UserCard: React.FC<IPropsGlobal> = props => {
         </div>
       </div>
       <div className="card-action">
-        <a href="/editUser">Editar perfil</a>
-        <a href="/newTravel">Inicia tu viaje</a>
+        <Modal actions={null} trigger={editUserTrigger}>
+          <EditUserModal />
+        </Modal>
+        <Modal actions={null} trigger={newTravelTrigger}>
+          <NewTravelModal callback={newTravelCallback} />
+        </Modal>
       </div>
     </div>
   );
 }
 
-const mapDispatchToProps = { setUserInterno: setUser };
+const mapDispatchToProps = {
+  setUserInterno: setUser,
+  addTravel: addTravel
+};
 const mapStateToProps = (state: IGlobalState) => ({
   token: state.token,
   user: state.user,

@@ -4474,7 +4474,7 @@ nav .input-field label.active i {
     min-height: 64px;
   }
   nav, nav .nav-wrapper i, nav a.sidenav-trigger, nav a.sidenav-trigger i {
-    height: 64px;
+    height: 84px;
     line-height: 64px;
   }
   .navbar-fixed {
@@ -8408,8 +8408,8 @@ input[type=range]::-ms-thumb {
 
 .carousel .carousel-item {
   visibility: hidden;
-  width: 200px;
-  height: 200px;
+  width: 400px;
+  height: 400px;
   position: absolute;
   top: 0;
   left: 0;
