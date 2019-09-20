@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ITravel } from '../interfaces';
 import TravelCard from "./travelCard";
 import { RouteComponentProps } from "react-router";
@@ -7,7 +7,7 @@ import { Button } from 'react-materialize';
 
 const TravelList: React.FC<RouteComponentProps> = props => {
 
-  const [travels, setTravels] = React.useState([]);
+  const [travels, setTravels] = React.useState();
 
   const [searchTermValue, setSearchTermValue,] = React.useState("");
   const [categoryValue, setCategoryValue,] = React.useState("");
@@ -28,7 +28,6 @@ const TravelList: React.FC<RouteComponentProps> = props => {
   };
 
   const getTravels = () => {
-    console.log("Getting by search term:" + searchTermValue);
     fetch("http://localhost:3000/api/travels?city=" + searchTermValue + "&category=" + categoryValue, {
       headers: {
         "Content-type": "application/json"
@@ -42,24 +41,9 @@ const TravelList: React.FC<RouteComponentProps> = props => {
     });
   };
 
-  const getPhotos = (travelId: string) => {
-    fetch("http://localhost:3000/api/checkpoint/photos?travelId=" + travelId, {
-      headers: {
-        "Content-type": "application/json"
-      }
-    }).then(res => {
-      if (res.ok) {
-        res.json().then(arrayPhotos => {
-          return arrayPhotos;
-        });
-      }
-    });
-  };
-
-  useEffect(() => {
+  if (!travels) {
     getTravels();
-  }, []);
-
+  }
 
   return (
     <div className="margins">
@@ -105,7 +89,7 @@ const TravelList: React.FC<RouteComponentProps> = props => {
         (travels && travels.length > 0) &&
         <div className="row">
           {travels.map((t: ITravel) => (
-            <div key={t._id} style={{ height: 400 }} className="col s3 m3">
+            <div key={t._id} className="col s3 m3">
               <TravelCard travel={t} />
             </div>
           ))}

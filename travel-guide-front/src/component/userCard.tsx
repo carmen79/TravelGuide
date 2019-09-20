@@ -25,7 +25,7 @@ const UserCard: React.FC<IPropsGlobal> = props => {
   if (props.user && props.user.avatar) {
     urlPhoto = Constants.URL_PHOTO_AVATAR + props.user.avatar;
   }
-  var triggerChangePhoto = <img src={urlPhoto} className="waves-effect waves-light imgusercard" />;
+  var triggerChangePhoto = <img alt="" src={urlPhoto} className="waves-effect waves-light imgusercard" />;
   var dateFrom = "";
   if (props.user && props.user.time) {
     dateFrom = new Date(props.user.time).toLocaleDateString();
@@ -73,7 +73,7 @@ const UserCard: React.FC<IPropsGlobal> = props => {
       <div className="card-content">
         <div className="row">
           <div className="col s4">
-            <Modal trigger={triggerChangePhoto} actions={null}>
+            <Modal className="modalbox" trigger={triggerChangePhoto} actions={null}>
               <div className="card-panel mynav back">
                 <h5>Actualiza tu foto de perfil</h5>
               </div>
@@ -104,42 +104,43 @@ const UserCard: React.FC<IPropsGlobal> = props => {
             <p>
               <br /><b>Tu dirección de correo actual:</b><br /><i className="tiny material-icons">email</i> {props.user.email}
             </p>
+            <br></br>
+            {dateFrom &&
+              <p>
+                Compartiendo experiencias desde {dateFrom}
+              </p>
+            }
+            <br></br>
             <p>
-              <br /><b>Sobre ti:</b><br />
-              <i>
-                {!props.user.description && "Edita tu perfil e introduce una descripción para que los usuarios sepan más de ti"}
-                <blockquote>
-                  {props.user.description && props.user.description}
-                </blockquote>
-              </i>
-              {dateFrom &&
-                <p>
-                  Compartiendo experiencias desde {dateFrom}
-                </p>
-              }
+              {props.travels && props.travels.length > 0 &&
+                "Aquí tienes tu lista de viajes! Puedes consultarlos o editarlos cuando lo desees."}
+              {(!props.travels || props.travels.length === 0) &&
+                "Aún no has dado de alta experiencias, anímate y compártelas en tu red!"}
             </p>
           </div>
           <div className="col s8 ">
             <h4>Hola {props.user.username}!</h4>
-            <h6>Desde tu perfil podrás modificar tu datos o crear nuevas experiencias para compartir.</h6>
             <p>
-              {props.travels && props.travels.length > 0 &&
-                "Abajo tienes tu lista de viajes! Puedes verlos o editarlos cuando lo desees."}
-              {!props.travels || props.travels.length === 0 &&
-                "Aún no has dado de alta experiencias, anímate y compártelas en tu red!"}
+              <br /><b>Sobre ti:</b><br />
             </p>
+            <i>
+              {!props.user.description && "Edita tu perfil e introduce una descripción para que los usuarios sepan más de ti"}
+              <blockquote>
+                {props.user.description && props.user.description}
+              </blockquote>
+            </i>
           </div>
         </div>
       </div>
       <div className="card-action">
-        <Modal actions={null} trigger={editUserTrigger}>
+        <Modal className="modalbox" actions={null} trigger={editUserTrigger}>
           <EditUserModal />
         </Modal>
-        <Modal actions={null} trigger={newTravelTrigger}>
+        <Modal className="modalbox" style={{ height: 620 }} actions={null} trigger={newTravelTrigger}>
           <NewTravelModal callback={newTravelCallback} />
         </Modal>
       </div>
-    </div>
+    </div >
   );
 }
 

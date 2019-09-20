@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ITravel, ICheckpoint } from "../interfaces";
 import { RouteComponentProps } from "react-router";
 import MapContainer from './map';
-import { Carousel, Card, CardTitle, Modal } from 'react-materialize';
+import { Carousel, Card, CardTitle } from 'react-materialize';
 import * as Constants from '../Constants';
 
 
@@ -59,13 +59,11 @@ const TravelView: React.FC<RouteComponentProps<{ id: string }>> = props => {
     setCurrentCheckpoint(cp);
   }
 
-  useEffect(() => {
+  if (!travel) {
     getTravel();
-  }, []);
-
+  }
 
   const travelPhoto = travel ? travel.photo : "";
-
 
   return (
     <div className="margins">
@@ -110,11 +108,11 @@ const TravelView: React.FC<RouteComponentProps<{ id: string }>> = props => {
           <h5>La experiencia en imágenes</h5>
           {checkpoints &&
             <Carousel>
-              <a target="_blank" href={Constants.URL_PHOTO_TRAVELS + travelPhoto}>
-                <img src={Constants.URL_PHOTO_TRAVELS + travelPhoto} />
+              <a rel="noopener noreferrer" target="_blank" href={Constants.URL_PHOTO_TRAVELS + travelPhoto}>
+                <img alt="" src={Constants.URL_PHOTO_TRAVELS + travelPhoto} />
               </a>
               {checkpoints.map((cp: ICheckpoint) => (
-                <a target="_blank" href={Constants.URL_PHOTO_CHECKPOINT + cp.photo}>
+                <a rel="noopener noreferrer" target="_blank" href={Constants.URL_PHOTO_CHECKPOINT + cp.photo}>
                   <img src={Constants.URL_PHOTO_CHECKPOINT + cp.photo} alt={cp.description} />
                 </a>
               ))
@@ -129,7 +127,7 @@ const TravelView: React.FC<RouteComponentProps<{ id: string }>> = props => {
         {checkpoints &&
           checkpoints.map((cp: ICheckpoint) => (
             <div className="col s3" style={{ cursor: "pointer" }} onClick={() => selectCheckpoint(cp)}>
-              <Card title={cp.title} header={<CardTitle image={Constants.URL_PHOTO_CHECKPOINT + cp.photo}></CardTitle>}>
+              <Card style={{ height: 400, overflow: 'hidden' }} title={cp.title} header={<CardTitle style={{ height: 150, overflow: 'hidden' }} image={Constants.URL_PHOTO_CHECKPOINT + cp.photo}></CardTitle>}>
                 {cp.description}
               </Card>
             </div>

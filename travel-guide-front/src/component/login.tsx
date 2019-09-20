@@ -39,16 +39,12 @@ const Login: React.FC<IPropsGlobal & RouteComponentProps> = props => {
           })
         } else {
           setErrorMessage("Error en la identificación de usuario");
-          console.log("Error in login!!!!!!!!!!!!!!!!!!");
+          console.log("Error in login");
         }
       }).catch(error => {
-        console.log("Error in login!!!!!!!!!!!!!!!!!!: " + error);
+        console.log("Error in login: " + error);
       })
   };
-
-  function clickForgetPassword() {
-    console.log("Call update password and send an email");
-  }
 
   const styleWhite = {
     color: 'white'
@@ -87,7 +83,7 @@ const Login: React.FC<IPropsGlobal & RouteComponentProps> = props => {
         <div>
           <button className="waves-effect waves-light btn mybuttonnav back" onClick={getToken}>
             <i className="material-icons left">account_circle</i>
-            Identificarse
+            Login
             </button>
         </div>
         <div>

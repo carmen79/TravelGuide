@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ITravel, ICheckpoint, IUser } from "../interfaces";
 import { RouteComponentProps } from "react-router";
 import MapContainer from './map';
@@ -25,15 +25,15 @@ const UserTravelView: React.FC<IPropsGlobal & RouteComponentProps<{ id: string }
   const [zoom, setZoom] = React.useState(12);
 
   const getTravel = () => {
+    console.log("GET TRAVEL AGAIN");
     fetch("http://localhost:3000/api/travels/" + props.match.params.id, {
       headers: {
         "Content-type": "application/json"
       }
     }).then(res => {
       if (res.ok) {
-        console.log("getTravel OK!!");
         res.json().then((travel: ITravel) => {
-          console.log("travel recuperado: " + JSON.stringify(travel));
+          console.log("Travel recuperado: " + JSON.stringify(travel));
           getCheckpoints(travel);
           setTravel(travel);
         });
@@ -82,10 +82,9 @@ const UserTravelView: React.FC<IPropsGlobal & RouteComponentProps<{ id: string }
     getCheckpoints(travel);
   }
 
-  useEffect(() => {
+  if (!travel) {
     getTravel();
-  }, []);
-
+  }
 
   const send = (checkpointId: string, theFile: any) => {
     if (checkpointId && checkpointId !== "" && theFile && theFile !== "") {
@@ -129,19 +128,24 @@ const UserTravelView: React.FC<IPropsGlobal & RouteComponentProps<{ id: string }
   }
 
   const triggerAddCheckpoint = <span style={{ cursor: "pointer" }}>Agrega una nueva visita <i className="small material-icons left">control_point</i></span>
-  const triggerChangePhoto = <a href="">Cargar Foto</a>
-  const deleteCheckpointTrigger = <a href="">Eliminar</a>
-  const triggerEditCheckpoint = <a href="">Editar</a>
-  const triggerEditTravel = <a href="">Editar viaje</a>
-  const triggerEditTravelSummary = <a href="">Resumen de viaje</a>
+  const triggerChangePhoto = <span className="cardlink" style={{ cursor: "pointer" }}>Cargar Foto</span>
+  const deleteCheckpointTrigger = <span className="cardlink" style={{ cursor: "pointer" }}>Eliminar</span>
+  const triggerEditCheckpoint = <span className="cardlink" style={{ cursor: "pointer" }}>Editar</span>
+  const triggerEditTravel = <span className="cardlink" style={{ cursor: "pointer" }}>Editar viaje</span>
+  const triggerEditTravelSummary = <span className="cardlink" style={{ cursor: "pointer" }}>Resumen de viaje</span>
 
   const styleModalCheckpoint = {
-    height: '500px',
+    height: '520px',
     width: '1100px'
   };
 
   const styleModalEditTravel = {
-    height: '600px',
+    height: '620px',
+    width: '800px'
+  };
+
+  const styleModalEditTravelSummary = {
+    height: '470px',
     width: '800px'
   };
 
@@ -181,12 +185,12 @@ const UserTravelView: React.FC<IPropsGlobal & RouteComponentProps<{ id: string }
         </div>
         <div className="card-action" >
           {travel &&
-            <Modal style={styleModalEditTravel} trigger={triggerEditTravel} actions={null}>
+            <Modal className="modalbox" style={styleModalEditTravel} trigger={triggerEditTravel} actions={null}>
               <EditTravel travel={travel} callback={getTravel} />
             </Modal>
           }
           {travel &&
-            <Modal style={styleModalEditTravel} trigger={triggerEditTravelSummary} actions={null}>
+            <Modal className="modalbox" style={styleModalEditTravelSummary} trigger={triggerEditTravelSummary} actions={null}>
               <EditTravelSummary travel={travel} callback={getTravel} />
             </Modal>
           }
@@ -203,28 +207,25 @@ const UserTravelView: React.FC<IPropsGlobal & RouteComponentProps<{ id: string }
           {checkpoints &&
             <Carousel>
               {travelPhoto &&
-                <a target="_blank" href={Constants.URL_PHOTO_TRAVELS + travelPhoto}>
-                  <img src={Constants.URL_PHOTO_TRAVELS + travelPhoto} />
+                <a target="_blank" rel="noopener noreferrer" href={Constants.URL_PHOTO_TRAVELS + travelPhoto}>
+                  <img alt="" src={Constants.URL_PHOTO_TRAVELS + travelPhoto} />
                 </a>
               }
 
               {checkpoints.map((cp: ICheckpoint) => (
-                <a key={cp._id} target="_blank" href={Constants.URL_PHOTO_CHECKPOINT + cp.photo}>
+                <a key={cp._id} target="_blank" rel="noopener noreferrer" href={Constants.URL_PHOTO_CHECKPOINT + cp.photo}>
                   <img src={Constants.URL_PHOTO_CHECKPOINT + cp.photo} alt={cp.description} />
                 </a>
               ))
               }
             </Carousel>
           }
-          {(!checkpoints || checkpoints.length === 0) &&
-            <h5>Aún no has registrado imágenes para esta experiencia</h5>
-          }
         </div>
       </div>
       <div className="row">
         <h5>Estos son los lugares de interés de tu experiencia</h5>
         {travel &&
-          <Modal style={styleModalCheckpoint} trigger={triggerAddCheckpoint} actions={null}>
+          <Modal className="modalbox" style={styleModalCheckpoint} trigger={triggerAddCheckpoint} actions={null}>
             <NewCheckpoint travel={travel} callback={getTravel} />
           </Modal>
         }
@@ -233,9 +234,9 @@ const UserTravelView: React.FC<IPropsGlobal & RouteComponentProps<{ id: string }
         {checkpoints &&
           checkpoints.map((cp: ICheckpoint) => (
             <div key={cp._id} className="col s3" >
-              <Card key={"C" + cp._id}
+              <Card style={{ height: 400, overflow: 'hidden' }} key={"C" + cp._id}
                 actions={[
-                  <Modal key={cp._id} style={styleModalCheckpoint} trigger={triggerEditCheckpoint} actions={null}>
+                  <Modal className="modalbox" key={cp._id} style={styleModalCheckpoint} trigger={triggerEditCheckpoint} actions={null}>
                     <EditCheckpoint checkpoint={cp} callback={getTravel} />
                   </Modal>,
                   <UploadCheckpointPhoto key={"UP" + cp._id} callback={send} checkpointId={cp._id} trigger={triggerChangePhoto}></UploadCheckpointPhoto>,
@@ -245,9 +246,12 @@ const UserTravelView: React.FC<IPropsGlobal & RouteComponentProps<{ id: string }
                 ]}
                 title={cp.title}
                 header={<CardTitle
-                  style={{ cursor: "pointer" }} onClick={() => selectCheckpoint(cp)}
+                  style={{ cursor: "pointer", height: 150, overflow: 'hidden' }} onClick={() => selectCheckpoint(cp)}
                   image={Constants.URL_PHOTO_CHECKPOINT + cp.photo}></CardTitle>}>
-                {cp.description}
+                <div >
+                  {cp.description}
+                </div>
+
               </Card>
 
             </div>

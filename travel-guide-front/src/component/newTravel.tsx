@@ -2,7 +2,7 @@ import React from "react";
 import { ITravel } from "../interfaces";
 import { IGlobalState } from "../Reducers/reducers";
 import { connect } from "react-redux";
-import { RouteComponentProps, Redirect } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import * as actions from "../Actions/actions";
 import { Button } from 'react-materialize';
 import cities from "cities.json";
@@ -26,7 +26,7 @@ const NewTravel: React.FC<IPropsGlobal & RouteComponentProps> = props => {
 
   var citiesString = "{";
 
-  cities.map(city => {
+  (cities as Array<any>).forEach(city => {
     citiesString += "\"" + city.name + " (" + city.country + ")\" : null, ";
   });
   citiesString += " \"null\" : null}";
@@ -60,7 +60,7 @@ const NewTravel: React.FC<IPropsGlobal & RouteComponentProps> = props => {
     let lat = Number();
     let lng = Number();
     if (destinoValue) {
-      cityJson = cities.find((data: any) => data.name === destinoValue);
+      cityJson = (cities as Array<any>).find((data: any) => data.name === destinoValue);
       if (cityJson) {
         lat = Number(cityJson.lat);
         lng = Number(cityJson.lng);
@@ -120,7 +120,9 @@ const NewTravel: React.FC<IPropsGlobal & RouteComponentProps> = props => {
 
   return (
     <div className="container height100">
-      <h4>Crea tu nueva experiencia</h4>
+      <div className="card-panel mynav back">
+        <h4>Crea tu nueva experiencia</h4>
+      </div>
       <Autocomplete options={{
         data: myCitiesJson,
         minLength: 2,

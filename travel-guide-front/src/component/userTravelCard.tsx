@@ -21,7 +21,6 @@ const UserTravelCard: React.FC<IPropsGlobal> = props => {
   }
 
   const deleteTravel = () => {
-    console.log("Deleting travel with id: " + props.travel._id);
     fetch("http://localhost:3000/api/travels/" + props.travel._id, {
       method: "delete",
       headers: {
@@ -36,31 +35,22 @@ const UserTravelCard: React.FC<IPropsGlobal> = props => {
     });
   };
 
-  const triggerDeleteTravel = <a href="#" onClick={deleteTravel}>Eliminar Viaje</a>
-
-  const styleWhite = {
-    color: 'white'
-  };
-
-  const styleHeight = {
-    height: '200px'
-  };
+  const triggerDeleteTravel = <a href="#!" onClick={deleteTravel}>ELIMINAR</a>
 
   return (
-    <div className="card" >
-      <div className="card-image" >
-        <img src={urlPhoto} className="imgtravelcard" />
+    <div className="card" style={{ height: 400 }} >
+      <div className="card-image" style={{ height: 150, overflow: 'hidden' }}>
+        <img alt="" src={urlPhoto} className="" />
         <span className="card-title"><b>Mi viaje a {props.travel.destino}</b></span>
       </div>
-      <div className="card-content">
+      <div className="card-content" style={{ height: 200, overflow: 'hidden' }} >
         <h5>{props.travel.descripcion}</h5>
         <p>Desde:  {props.travel.fechaInicio} Hasta: {props.travel.fechaFin} </p>
-        <div className="card-action" >
-          <a href={travelProfileUrl}>Edita tu experiencia</a>
-          <Confirm msg="¿Confirmas que deseas cerrar eliminar esta experiencia?"
-            callback={deleteTravel} trigger={triggerDeleteTravel}></Confirm>
-        </div>
-
+      </div>
+      <div className="card-action" style={{ height: 50, overflow: 'hidden' }}>
+        <a href={travelProfileUrl}>EDITAR</a>
+        <Confirm msg="¿Confirmas que deseas cerrar eliminar esta experiencia?"
+          callback={deleteTravel} trigger={triggerDeleteTravel}></Confirm>
       </div>
     </div>
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Button } from 'react-materialize';
+import { Modal } from 'react-materialize';
 
 interface IProps {
   msg: string;
@@ -24,7 +24,7 @@ const Confirm: React.FC<IProps> = props => {
   };
 
   return (
-    <Modal style={styleHeight} trigger={props.trigger} actions={null} >
+    <Modal className="modalbox" style={styleHeight} trigger={props.trigger} actions={null} >
       <div >
         <div className="card-panel mynav back">
           <h5 style={styleWhite} >{props.msg}</h5>

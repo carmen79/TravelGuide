@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { IGlobalState } from "../Reducers/reducers";
 import { ITravel } from '../interfaces';
@@ -15,7 +15,6 @@ const UserTravelList: React.FC<IPropsGlobal> = props => {
 
   const getTravels = () => {
     if (props.token) {
-      console.log("Getting Travels from backend")
       fetch("http://localhost:3000/api/travels/mytravels", {
         headers: {
           "Content-type": "application/json",
@@ -32,19 +31,16 @@ const UserTravelList: React.FC<IPropsGlobal> = props => {
     }
   };
 
-  useEffect(() => {
-    if (!props.travels) {
-      getTravels();
-    }
-  }, []);
-
+  if (!props.travels) {
+    getTravels();
+  }
 
   return (
     <div>
       {(props.travels && props.travels.length > 0) &&
         <div className="row">
           {props.travels.map((t: ITravel) => (
-            <div key={t._id} style={{ height: 400 }} className="col s3">
+            <div key={t._id} className="col s3">
               <UserTravelCard travel={t} />
             </div>
           ))}

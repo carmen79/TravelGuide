@@ -47,7 +47,6 @@ a {
   font-size: 15px;
 }
 
-
 .homefooter {
   color:white;
   background-color: #32AD68;
@@ -89,19 +88,20 @@ a {
   padding: 1px;
   width: 100%;
   color:#016297;
-  font-size: 24px;
+  font-size: 60px;
   line-height: 44px;
   max-width: none;
   font-family: "Gotham SSm A","Gotham SSm B",sans-serif;
-  padding-top: 30px;
+  padding-top: 50px;
+  padding-bottom: 15px;
 }
 
 .blueType {
-  color:#E37E3D;
-  font-size: 35px;
+  color:rgb(187, 55, 55);
+  font-size: 70px;
   line-height: 40px;
-  max-width: 870px;  
   text-align: center;
+  padding-bottom: 40px;
 }
 
 .flex-container.left {
@@ -135,7 +135,7 @@ a {
 }
 
 .imgusercardback {
-  background-image: url("/img/usercardback4.jpg");
+  background-image: url("/img/usercardback5.jpg");
   width: 100%;
   height: 150px;
 }
@@ -167,8 +167,10 @@ a {
 }
 
 .mybuttonnav.back {
-   color: #fff;
-   background-color: #E37E3D;
+   color: #1976d2;
+   background-color: white;
+   border-radius: 10px;
+   width: 150px;
 }
 
 .bigtext {
@@ -193,4 +195,26 @@ a {
 }
 .traveliconblue {
   color: #1976d2;
+}
+
+.cardlink {
+   color: #1976d2;
+   background-color: white;
+   padding: 10px;
+    -webkit-transition: color .3s ease;
+    transition: color .3s ease;
+    text-transform: uppercase;
+}
+
+.cardheight {
+  min-height: 370px;
+  height: 370px;
+  max-height: 370px;
+}
+
+.modalbox {
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+    border: grey;
+    border-style: solid;
 }

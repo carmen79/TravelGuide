@@ -76,7 +76,7 @@ const EditUser: React.FC<IPropsGlobal & RouteComponentProps> = props => {
       <div className="form-group">
         <div className="input-field col s12">
           <input id="username" className="validate" value={userNameValue} type="text" onChange={updateUserName} />
-          <label htmlFor="username">name</label>
+          <label htmlFor="username">Nombre</label>
         </div>
         <div className="input-field col s12">
           <input id="email" className="validate" value={emailValue} type="email" onChange={updateEmail} />

@@ -22,9 +22,10 @@ const NewTravelModal: React.FC<IPropsGlobal> = props => {
 
   var citiesString = "{";
 
-  cities.map(city => {
+  (cities as Array<any>).forEach(city => {
     citiesString += "\"" + city.name + " (" + city.country + ")\" : null, ";
   });
+
   citiesString += " \"null\" : null}";
   var myCitiesJson = JSON.parse(citiesString);
 
@@ -56,7 +57,7 @@ const NewTravelModal: React.FC<IPropsGlobal> = props => {
     let lat = Number();
     let lng = Number();
     if (destinoValue) {
-      cityJson = cities.find((data: any) => data.name === destinoValue);
+      cityJson = (cities as Array<any>).find((data: any) => data.name === destinoValue);
       if (cityJson) {
         lat = Number(cityJson.lat);
         lng = Number(cityJson.lng);
@@ -118,7 +119,9 @@ const NewTravelModal: React.FC<IPropsGlobal> = props => {
 
   return (
     <div className="margins height100">
-      <h4>Crea tu nueva experiencia</h4>
+      <div className="card-panel mynav back">
+        <h4>Crea tu nueva experiencia</h4>
+      </div>
       <Autocomplete options={{
         data: myCitiesJson,
         minLength: 2,
@@ -180,7 +183,7 @@ const NewTravelModal: React.FC<IPropsGlobal> = props => {
           <Button className="modal-close waves-effect waves-light  mybuttonnav back"><i className="small material-icons left">cancel</i>Cancelar</Button>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

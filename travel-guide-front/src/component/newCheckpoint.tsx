@@ -17,8 +17,8 @@ const NewCheckpoint: React.FC<IPropsGlobal> = props => {
 
   const [file, setFile] = React.useState();
   const [titleValue, setTitle] = React.useState("");
-  const [lat, setLat] = React.useState();
-  const [lng, setLng] = React.useState();
+  const [lat, setLat] = React.useState(props.travel.lat);
+  const [lng, setLng] = React.useState(props.travel.lng);
   const [descriptionValue, setDescription] = React.useState("");
 
   const updateTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +36,7 @@ const NewCheckpoint: React.FC<IPropsGlobal> = props => {
   const handleFileUpload = (event: any) => {
     setFile(event.target.files[0]);
   }
-  
+
   const addCheckpoint = () => {
 
     fetch("http://localhost:3000/api/checkpoint", {
@@ -55,7 +55,7 @@ const NewCheckpoint: React.FC<IPropsGlobal> = props => {
       })
     }).then(res => {
       if (res.ok) {
-        res.json().then( (cp : ICheckpoint)  => {
+        res.json().then((cp: ICheckpoint) => {
           sendPicture(cp._id, file);
         });
       }
@@ -85,7 +85,7 @@ const NewCheckpoint: React.FC<IPropsGlobal> = props => {
       });;
     }
   };
-  
+
   function callCallback() {
     if (props.callback && typeof props.callback === 'function') {
       props.callback();
@@ -110,11 +110,11 @@ const NewCheckpoint: React.FC<IPropsGlobal> = props => {
         <div className="col s6">
           <div>
             <label htmlFor="desc">Introduce título para este momento</label>
-            <input id="desc" value={titleValue} type="text" onChange={updateTitle} />
+            <input id="desc" defaultValue="" type="text" onChange={updateTitle} />
           </div>
           <div>
             <label htmlFor="desc">Introduce una descripción</label>
-            <input id="desc" value={descriptionValue} type="text" onChange={updateDescription} />
+            <input id="desc" defaultValue="" type="text" onChange={updateDescription} />
           </div>
           <div className="file-field input-field">
             <div className="btn">

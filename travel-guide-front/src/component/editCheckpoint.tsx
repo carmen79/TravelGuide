@@ -1,8 +1,7 @@
 import React from "react";
-import { ITravel, ICheckpoint } from "../interfaces";
+import { ICheckpoint } from "../interfaces";
 import { IGlobalState } from "../Reducers/reducers";
 import { connect } from "react-redux";
-import * as actions from "../Actions/actions";
 import { Button } from 'react-materialize';
 import MapContainer from './map';
 

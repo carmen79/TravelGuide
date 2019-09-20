@@ -34,34 +34,26 @@ const NavbarModal: React.FC<IPropsGlobal & RouteComponentProps> = props => {
     props.history.push("/");
   }
 
-  const triggerLogin = <Button className="waves-effect waves-light  mybuttonnav back"><i className="small material-icons left">account_circle</i>Identificarse</Button>;
-  const triggerAddUser = <Button className="waves-effect waves-light mybuttonnav back"><i className="small material-icons left">add_circle_outline</i>Registrarse</Button>;
+  const triggerLogin = <Button className="waves-effect waves-light  mybuttonnav back"><i className="small material-icons left">account_circle</i>Login</Button>;
+  const triggerAddUser = <Button className="waves-effect waves-light mybuttonnav back"><i className="small material-icons left">add_circle_outline</i>Registro</Button>;
   const triggerCloseSesion = <Button className="waves-effect waves-light mybuttonnav back">Cerrar Sesión</Button>;
 
   function renderNoUser() {
     return (
       <ul id="nav-mobile" className="right hide-on-med-and-down">
         <li className="navbar-brand mb-0 h1">
-          <Modal trigger={triggerLogin} actions={null}>
+          <Modal className="modalbox" trigger={triggerLogin} actions={null}>
             <Login history={props.history} location={props.location} match={props.match} />
           </Modal>
         </li>
         <li className="navbar-brand mb-0 h1">
-          <Modal trigger={triggerAddUser} actions={null} >
+          <Modal className="modalbox" trigger={triggerAddUser} actions={null} >
             <AddUser history={props.history} location={props.location} match={props.match} />
           </Modal>
         </li>
       </ul>
     );
   }
-
-  const styleWhite = {
-    color: 'white'
-  };
-
-  const styleHeight = {
-    height: '200px'
-  };
 
   const goToUserProfile = () => {
     props.history.push("/userProfile");
@@ -71,7 +63,7 @@ const NavbarModal: React.FC<IPropsGlobal & RouteComponentProps> = props => {
     return (
       <ul id="nav-mobile" className="right hide-on-med-and-down ">
         <li className="waves-effect waves-light" onClick={goToUserProfile} >
-          <img src={urlPhoto} className="imguser" />
+          <img alt="" src={urlPhoto} className="imguser" />
         </li>
         <li className="waves-effect waves-light mynav profile" onClick={goToUserProfile} >
           {props.user && props.user.username}
@@ -89,8 +81,8 @@ const NavbarModal: React.FC<IPropsGlobal & RouteComponentProps> = props => {
   return (
 
     <nav className="nav-wrapper mynav back">
-      <a href="/" className="brand-logo">Travel <img height="50px" width="50px" margin-top="12px" src="/img/logotransp.png"></img>
-        &nbsp;Experiences</a>
+      <a href="/" className="brand-logo">Travel&nbsp;&nbsp;<img style={{ position: "absolute" }} height="85px" width="85px" margin-top="12px" alt="" src="/img/logotransp.png"></img>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Experiences</a>
       {!props.token && renderNoUser()}
       {props.token && renderUser()}
     </nav>

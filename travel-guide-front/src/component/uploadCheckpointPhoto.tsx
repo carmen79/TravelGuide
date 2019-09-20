@@ -21,7 +21,7 @@ const UploadCheckpointPhoto: React.FC<IProps> = props => {
   }
 
   return (
-    <Modal trigger={props.trigger} actions={null}>
+    <Modal className="modalbox" trigger={props.trigger} actions={null}>
       <div className="card-panel mynav back">
         <h5>Selecciona una foto para este lugar</h5>
       </div>

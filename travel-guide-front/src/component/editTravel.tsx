@@ -23,7 +23,7 @@ const EditTravel: React.FC<IPropsGlobal> = props => {
 
   var citiesString = "{";
 
-  cities.map(city => {
+  (cities as Array<any>).forEach(city => {
     citiesString += "\"" + city.name + " (" + city.country + ")\" : null, ";
   });
   citiesString += " \"null\" : null}";
@@ -57,7 +57,7 @@ const EditTravel: React.FC<IPropsGlobal> = props => {
     let lat = Number();
     let lng = Number();
     if (destinoValue) {
-      cityJson = cities.find((data: any) => data.name === destinoValue);
+      cityJson = (cities as Array<any>).find((data: any) => data.name === destinoValue);
       if (cityJson) {
         lat = Number(cityJson.lat);
         lng = Number(cityJson.lng);
@@ -85,6 +85,8 @@ const EditTravel: React.FC<IPropsGlobal> = props => {
       if (res.ok) {
         if (file) {
           sendPicture(props.travel, file);
+        } else {
+          props.callback();
         }
       }
     });
@@ -114,10 +116,6 @@ const EditTravel: React.FC<IPropsGlobal> = props => {
     }
   };
 
-  const viajeFamiliaSelected = props.travel.category === "Viaje en familia";
-  const romanticoSelected = props.travel.category === "Romántico";
-  const mochileroSelected = props.travel.category === "Mochilero solitario";
-  const amigosSelected = props.travel.category === "Viaje en grupo con amigos";
   const publicSelected = props.travel.public;
 
   return (
@@ -152,11 +150,11 @@ const EditTravel: React.FC<IPropsGlobal> = props => {
           <input id="desc" value={descripcionValue} type="text" onChange={updateDescripcion} />
         </div>
         <div className="input field col s12">
-          <select className="browser-default" onChange={updateCategory}>
-            <option value="Viaje en familia" selected={viajeFamiliaSelected}>Viaje en familia</option>
-            <option value="Romántico" selected={romanticoSelected}>Romántico</option>
-            <option value="Mochilero solitario" selected={mochileroSelected}>Mochilero solitario</option>
-            <option value="Viaje en grupo con amigos" selected={amigosSelected}>Viaje en grupo con amigos</option>
+          <select className="browser-default" defaultValue={props.travel.category} onChange={updateCategory}>
+            <option value="Viaje en familia" >Viaje en familia</option>
+            <option value="Romántico" >Romántico</option>
+            <option value="Mochilero solitario" >Mochilero solitario</option>
+            <option value="Viaje en grupo con amigos" >Viaje en grupo con amigos</option>
           </select>
           <label>Selecciona una categoría</label>
         </div>

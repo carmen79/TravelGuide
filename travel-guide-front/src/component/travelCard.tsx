@@ -15,19 +15,18 @@ const TravelCard: React.FC<IPropsGlobal> = props => {
   }
 
   return (
-    <div className="card" >
-      <div className="card-image" >
-        <img src={urlPhoto} className="imgtravelcard" />
-        <span className="card-title"><b> {props.travel.destino}</b></span>
+    <div className="card cardheight" >
+      <div className="card-image" style={{ height: 150, overflow: 'hidden' }}>
+        <a href={travelProfileUrl}>
+          <img alt="" src={urlPhoto} className="" />
+          <span className="card-title"><b> {props.travel.destino}</b></span>
+        </a>
       </div>
       <div className="card-content">
         <h5>{props.travel.descripcion}</h5>
         <p>Desde:  {props.travel.fechaInicio} Hasta: {props.travel.fechaFin} </p>
-        <div className="card-action" >
-          <a href={travelProfileUrl}>Detalle de la experiencia</a>
-        </div>
       </div>
-    </div>
+    </div >
 
   );
 };

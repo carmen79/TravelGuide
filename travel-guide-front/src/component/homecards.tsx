@@ -5,6 +5,7 @@ import Login from './login'
 import NewTravelModal from './newTravelModal'
 import { IGlobalState } from "../Reducers/reducers";
 import { connect } from "react-redux";
+import { Button } from 'react-materialize';
 
 
 
@@ -14,12 +15,16 @@ interface IPropsGlobal {
 
 const HomeCards: React.FC<IPropsGlobal & RouteComponentProps> = props => {
 
-  const triggerLogin = <a className="btn-floating halfway-fab waves-effect waves-light orange darken-4"><i className="material-icons">account_circle</i></a>;
-  const newTravelTrigger = <a className="btn-floating halfway-fab waves-effect waves-light orange darken-4"><i className="material-icons">location_on</i></a>;
+  const triggerLogin = <Button className="btn-floating halfway-fab waves-effect waves-light blue darken-2"><i className="material-icons">account_circle</i></Button>;
+  const newTravelTrigger = <Button className="btn-floating halfway-fab waves-effect waves-light blue darken-2"><i className="material-icons">location_on</i></Button>;
 
   const goToUserProfile = () => {
     props.history.push("/userProfile")
   }
+  const goToSearch = () => {
+    props.history.push("/travels")
+  }
+
   return (
     <div className="margins">
       <div className="flex-container">
@@ -27,16 +32,16 @@ const HomeCards: React.FC<IPropsGlobal & RouteComponentProps> = props => {
           <div className="card">
             {!props.token &&
               <div className="card-image">
-                <img src="/img/createTravel.jpg" />
-                <Modal trigger={triggerLogin} actions={null}>
+                <img alt="" src="/img/createTravel.jpg" />
+                <Modal className="modalbox" trigger={triggerLogin} actions={null}>
                   <Login history={props.history} location={props.location} match={props.match} />
                 </Modal>
               </div>
             }
             {props.token &&
               <div className="card-image">
-                <img src="/img/createTravel.jpg" />
-                <a href="/userProfile" className="btn-floating halfway-fab waves-effect waves-light orange darken-4"><i className="material-icons">account_circle</i></a>
+                <img alt="" src="/img/createTravel.jpg" />
+                <a href="/userProfile" className="btn-floating halfway-fab waves-effect waves-light blue darken-2"><i className="material-icons">account_circle</i></a>
               </div>
             }
             <div className="card-content">
@@ -47,8 +52,8 @@ const HomeCards: React.FC<IPropsGlobal & RouteComponentProps> = props => {
         <div className="col s2">
           <div className="card">
             <div className="card-image">
-              <img src="/img/categoriesTravel.jpg" />
-              <a className="btn-floating halfway-fab waves-effect waves-light orange darken-4"><i className="material-icons">picture_in_picture</i></a>
+              <img alt="" src="/img/categoriesTravel.jpg" />
+              <Button onClick={goToSearch} className="btn-floating halfway-fab waves-effect waves-light blue darken-2"><i className="material-icons">picture_in_picture</i></Button>
             </div>
             <div className="card-content">
               <p>Diferentes categorías. En Travel Experiences pensamos en todo tipo de viajeros para adaptarnos a tí</p>
@@ -58,8 +63,8 @@ const HomeCards: React.FC<IPropsGlobal & RouteComponentProps> = props => {
         <div className="col s2">
           <div className="card">
             <div className="card-image">
-              <img src="/img/checkpoints.jpg" />
-              <Modal actions={null} trigger={newTravelTrigger}>
+              <img alt="" src="/img/checkpoints.jpg" />
+              <Modal className="modalbox" actions={null} trigger={newTravelTrigger}>
                 <NewTravelModal callback={goToUserProfile} />
               </Modal>
             </div>
