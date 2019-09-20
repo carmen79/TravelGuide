@@ -1,10 +1,10 @@
 # TravelGuide
 
-Travel guide / Travel experiences is a web application for travellers community to share experiences, pictures, opinions, etc.
+Travel guide (or finally called Travel experiences) is a web application for travellers community to share experiences, pictures, opinions, etc around the world.
 
-It's not focused in concrete business but the experience by itself.
+Note this is not an app focused in valorate specific business (like restaurants, hotels, etc.) but to share the experience and opinions by itself.
 
-Travel Experiences has been developed as a final project of the fullstack web developer bootcamp
+Travel Experiences has been developed as a final project of the fullstack web developer bootcamp.
 
 # Technologies
 Travel experiences is composed by:
