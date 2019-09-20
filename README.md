@@ -9,5 +9,8 @@ Travel Experiences has been developed as a final project of the fullstack web de
 # Technologies
 Travel experiences is composed by:
 
-* A backend server developed in NodeJS responsible for connecting to Mongo DB and serve the frontend requests
-* A frontend server developed in NodeJS, Typescript React and Redux, also integrating with the GoogleMaps API to show maps and positions in the front pages
+* A backend server developed in NodeJS responsible for connecting to a MongoDB data base, storing application uploades (using multer) and serve the frontend requests
+* A frontend server developed mainly in NodeJS, Typescript React and Redux, also integrating with the GoogleMaps API to show maps and positions in the front pages. Materialize CSS framework has been used to decorate the pages.
+
+# WIP
+Although the project has been successfully presented as a final project to obtain the graduate, there's much work to do, so this project will be upgraded regularly to include new features
